@@ -5,20 +5,9 @@
 	<title>登录</title>
 	<link rel="stylesheet" href="">
 	<link href="" rel="shortcut icon">
-        <link rel="stylesheet" href="<?php echo STTE_PUBLIC?>/css/bui-min.css">
-	<link rel="stylesheet" href="<?php echo STTE_PUBLIC?>/css/dpl-min.css">
-	<style>
-		body,ul,li,div{margin:0;padding: 0;list-style: none;}
-		#wapper{width: 400px;height: 200px;position: absolute;top: 50%;left: 50%;border: 1px solid #414da7; border-radius: 5%;overflow: hidden;margin: -140px  0  0 -200px;}
-		#wapper div {margin: 5px auto;}
-		#wapper div div {display: inline-block;}
-		#wapper #header {background-color: #414da7;color: #fff;font-size: 18px;text-align: center;padding: 8px 0;margin-top: 0;}
-		#login {text-align: center;}
-		#pwd {text-align: center;}
-		#user-name {text-align: center;}
-		#tip {min-height: 40px;}
-		#other {text-align: right; padding-right: 100px}
-	</style>
+        <link rel="stylesheet" href="<?php echo STTE_PUBLIC; ?>/css/bui-min.css">
+	<link rel="stylesheet" href="<?php echo STTE_PUBLIC; ?>/css/dpl-min.css">
+        <link rel="stylesheet" href="<?php echo STTE_PUBLIC; ?>/css/login.css"/>
 </head>
 <!-- #e8e9ee 背景  -->
 <!-- #414da7 深蓝 -->
@@ -41,6 +30,5 @@
 	<script src="<?php echo STTE_PUBLIC?>/js/jquery-1.8.1.min.js"></script>
 	<script>
 	</script>
-</body>
 </html>
 
