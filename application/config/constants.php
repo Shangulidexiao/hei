@@ -87,4 +87,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 /*
  * 网站的自定义常量
  */
-defined('STTE_PUBLIC')         OR define('STTE_PUBLIC', '/public'); //静态文件的根目录
+defined('SITE_PUBLIC')         OR define('SITE_PUBLIC', '/public'); //静态文件的根目录
