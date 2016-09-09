@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <title> 小黑科技登录</title>
+    <title> 登录_小黑科技</title>
 
     <!-- css -->
     <link href="<?php echo SITE_PUBLIC;?>/css/bs3/dpl-min.css" rel="stylesheet" type="text/css" />
@@ -46,18 +46,18 @@
             _height:100%;
         }
         .bottom-container > .bottom-content{
-            height: 245px;
+            height: 360px;
         }
         /*copyright*/
         .bottom-container > .foot{
             position:absolute;
             bottom: 0;
             text-align: center;
-            width:250px;
+            width:360px;
             color:#666;
             word-spacing: 3px;
             left: 50%;
-            margin-left: -125px;
+            margin-left: -180px;
         }
         #theForm{
             border: 1px solid #ddd;
@@ -271,7 +271,7 @@
                             <label for="captcha" class="control-label glyphicon glyphicon-check"></label>
                             <input type="text" name="captcha" id="captcha" placeholder="验证码" tabindex="3" autocomplete="off"
                                    class="form-control-input  input-captcha"/>
-                            <img id="captchaImg" src="assets/img/login/captcha.jpg" width="90" height="37" >
+                            <img id="captchaImg" src="" alt="验证码" width="90" height="37" >
                         </div>
                     </div>
                 </div>
@@ -288,12 +288,12 @@
     <div class="bottom-container">
         <div class="bottom-content"></div>
         <div class="foot">
-            <p>&copy; 2014-2015 xxxx All Rights Reserved.</p>
+            <p>&copy; 2015-2016 小黑科技 All Rights Reserved.</p>
         </div>
     </div>
 <!-- jQuery -->
 <script src="<?php echo SITE_PUBLIC;?>/js/jquery-1.10.2.min.js"></script>
-<script src="<?php echo SITE_PUBLIC;?>/js/sea.js"></script>
+<script src="<?php echo SITE_PUBLIC;?>/js/bui.js"></script>
 <script src="<?php echo SITE_PUBLIC;?>/js/config.js"></script>
 <!--[if lt IE 10]>
 <script src="<?php echo SITE_PUBLIC;?>/js/jquery.placeholder.min.js"></script>
@@ -303,6 +303,7 @@
     /**
      */
     $(function(){
+        
         // 闭眼动画
         $('#password').focus(function() {
             $('#owl').find('.arm').stop().first().animate({top:'5px',left:'65px'},300).next().animate({top:'5px',left:'120px'},300);
@@ -334,9 +335,8 @@
                 titleTpl : '<span class="x-icon x-icon-small x-icon-warning"><i class="icon icon-white icon-info"></i></span>\ <div class="tips-content">{title}</div>'
             };
             var tipsMsg = [
-                { trigger : '#username', title : '测试账号：admin'},
-                { trigger : '#password', title : '密码：123'},
-                { trigger : '#captcha',  title : '3257'}
+                { trigger : '#username', title : '用户名为字母和数字组合'},
+                { trigger : '#password', title : '密码最少6位'},
             ];
             $.each( tipsMsg, function(i , n){
                 $.extend( conf, n );
@@ -408,40 +408,6 @@
                 return false;
             });
         });
-
-
-        // 拦截请求 模拟数据生成
-        // 开启数据模拟 - config.js -> mock : true
-        if ( seajs.data.mock ) {
-            seajs.use(['mock'],function( Mock ){
-
-                Mock.getParam = function( key, strURL ){
-                    strURL = strURL || window.location.search;
-                    return new RegExp( "(^|\\?|&)" + key + "=([^&]*)(\\s|&|$)", "i" ).test( strURL ) ?
-                            decodeURIComponent( RegExp.$2.replace( /\+/g, " " ) ) : "";
-                };
-
-                // 登录
-                Mock.mock('login', function( options ){
-                    var strData = 'get' == options.type.toLowerCase() ? options.url : options.data;
-                    var username = Mock.getParam('username', strData),
-                        password = Mock.getParam('password', strData),
-                        captcha  = Mock.getParam('captcha',  strData);
-
-                    var result = { flag : true, msg : '登录成功.' };
-                    if ( '3257' != captcha ) {
-                        result.flag = false;
-                        result.msg = '您输入的验证码错误。';
-                        return result
-                    }
-                    if ( 'admin' != username || '123' != password ) {
-                        result.flag = false;
-                        result.msg = '您输入的用户名或密码错误。'
-                    }
-                    return result
-                });
-            });
-        }
     });
 </script>
 </body>
