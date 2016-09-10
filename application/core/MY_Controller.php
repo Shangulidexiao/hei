@@ -8,10 +8,32 @@ class MY_Controller extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->isLogin();
+        $this->load->helper('url');
+        $isLogin = $this->isLogin();
+        if($isLogin === FALSE){
+            redirect('/Login','refresh');
+        }
     }
     
     public function isLogin(){
-        echo 'success';
+        $uid = $this->input->cookie('uid');
+        $ukey = $this->input->cookie('ukey');
+        $pkey = $this->input->cookie('pkey');
+        
+        $adminKey = md5(PKEY . $ukey . $uid);
+        if($pkey !== $adminKey){
+            return FALSE;
+        }else{
+            return TRUE;
+        }
+        
+    }
+    
+    public function logOut(){
+        $this->load->helper('cookie');
+        delete_cookie('uid', '', '/');
+        delete_cookie('ukey', '', '/');
+        delete_cookie('pkey', '', '/');
+        redirect('/Login','refresh');
     }
 }

@@ -85,9 +85,9 @@ class Login extends CI_Controller {
             }else{
                 $admin = $this->admin->getOne(array('user_name'=>$userName));
                 if(isset($admin['password']) && password_verify($password, $admin['password'])){
-                    $this->input->set_cookie('uid',$admin['user_name'],3600*24,'xiaohei.com','/','','',TRUE);
-                    $this->input->set_cookie('ukey', UKEY,3600*24,'xiaohei.com','/','','',TRUE);
-                    $this->input->set_cookie('pkey', md5(PKEY . UKEY . $admin['user_name']),3600*24,'xiaohei.com','/','','',TRUE);
+                    $this->input->set_cookie('uid',$admin['user_name'],3600*24,'','/','','',TRUE);
+                    $this->input->set_cookie('ukey', UKEY,3600*24,'','/','','',TRUE);
+                    $this->input->set_cookie('pkey', md5(PKEY . UKEY . $admin['user_name']),3600*24,'','/','','',TRUE);
                     ajaxJson('登录成功');
                 }else{
                     ajaxJson('登录失败,用户名或密码不正确');

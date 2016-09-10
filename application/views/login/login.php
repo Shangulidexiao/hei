@@ -361,7 +361,7 @@
                     dataType : 'json',
                     data : $("#theForm").find('input').serialize(),
                     success : function( data ){
-                        if ( data.code === '200' ) {
+                        if ( data.code == '200' ) {
                             // 如果选择了记住账号，账号记住于cookies
                             if( $('#remember').is(':checked') ){
                                 cookie.set( 'username', $('#username').val(), 1);// 1天
