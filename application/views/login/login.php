@@ -233,6 +233,7 @@
 
         <div class="content">
             <div id="theForm" >
+                <?php echo form_open('/Login/doAc');?>
                 <div id="owl" class="owl">
                     <div class="arms">
                         <div class="arm"></div>
@@ -255,7 +256,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <label for="username" class="control-label  glyphicon glyphicon-user"></label>
-                            <input type="text" name="username" id="username" placeholder="用户名" tabindex="1" autofocus="true"
+                            <input type="text" name="userName" id="username" placeholder="用户名" tabindex="1" autofocus="true"
                                    class="form-control-input" autocomplete="off" data-rules="{required:true}"/>
                         </div>
                     </div>
@@ -280,8 +281,9 @@
                         <input type="checkbox" value="1" id="remember" class="fn-vm" tabindex="4"/>
                         <label for="remember">&nbsp;记住我</label>
                     </div>
-                    <button class="button button-primary " id="loginBtn" tabindex="5">登录</button>
+                    <button class="button button-primary " type="submit" id="loginBtn" tabindex="5">登录</button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -353,20 +355,13 @@
             $("#loginBtn").click(function(){
                 var $this = $(this);
                 $.ajax({
-                    url : 'login',
-                    type : 'GET',
+                    url : '/Login/doAc',
+                    type : 'POST',
                     cache : false,
                     dataType : 'json',
                     data : $("#theForm").find('input').serialize(),
                     success : function( data ){
-                        /**
-                         * data = {
-                         *          flag : true|false,
-                         *          msg : ''
-                         *        }
-                         */
-                        if ( data.flag ) {
-
+                        if ( data.code === '200' ) {
                             // 如果选择了记住账号，账号记住于cookies
                             if( $('#remember').is(':checked') ){
                                 cookie.set( 'username', $('#username').val(), 1);// 1天
@@ -374,10 +369,9 @@
                                 cookie.remove('username');
                             }
                             // 登录成功
-                            //window.location = 'main.html';
-                            BUI.Message.Alert( data.msg, 'success' );
+                            window.location = '/Index/index';
+                            //BUI.Message.Alert( data.msg, 'success' );
                         } else {
-
                             // 登录失败提示 - 改变提示样式
                             $("#noticeTip").slideUp(200, function(){
                                 var $this = $(this), tip = $this.find('.tips-notice');

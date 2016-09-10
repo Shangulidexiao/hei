@@ -88,3 +88,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
  * 网站的自定义常量
  */
 defined('SITE_PUBLIC')         OR define('SITE_PUBLIC', '/public'); //静态文件的根目录
+defined('PKEY')                OR define('PKEY', 'U3OS8FX~.DSDE8IJD'); //静态文件的根目录
+defined('UKEY')                OR define('UKEY', 'U3Opldoe48fdjhsnvs3'); //静态文件的根目录
