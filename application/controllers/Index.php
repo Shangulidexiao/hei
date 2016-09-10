@@ -11,7 +11,9 @@ class Index extends MY_Controller {
     }
     
     public function index(){
-        
+        $this->load->helper('url');
+        $data = array('admin'=>$this->userInfo);
+        $this->load->view('index/index',$data);
     }
     
 }

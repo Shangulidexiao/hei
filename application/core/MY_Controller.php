@@ -6,6 +6,7 @@
 
 class MY_Controller extends CI_Controller {
     
+    public $userInfo;
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
@@ -13,6 +14,10 @@ class MY_Controller extends CI_Controller {
         if($isLogin === FALSE){
             redirect('/Login','refresh');
         }
+        
+        $uid = $this->input->cookie('uid');
+        $this->load->model('AdminModel','admin');
+        $this->userInfo = $this->admin->getOne(array('user_name'=>$uid));
     }
     
     public function isLogin(){
