@@ -33,7 +33,6 @@
     <script src="<?php echo SITE_PUBLIC;?>/js/jquery-1.8.1.min.js"></script>
     <script src="<?php echo SITE_PUBLIC;?>/js/bui-min.js"></script>
     <script src="<?php echo SITE_PUBLIC;?>/js/config.js"></script>
-    <script src="<?php echo SITE_PUBLIC;?>/js/common/page-min.js"></script>
     <script src="<?php echo SITE_PUBLIC;?>/js/common/main-min.js"></script>
     <!--[if lt IE 10]>
     <script src="<?php echo SITE_PUBLIC;?>/js/jquery.placeholder.min.js"></script>
@@ -59,8 +58,11 @@
                 ]
               }]
           }];
+          new PageUtil.MainPage({
+            modulesConfig : config
+          });
     });
- 
+    
   </script>
  </body>
 </html>
