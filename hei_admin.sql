@@ -6,7 +6,7 @@
  * Created: 2016-9-10
  */
 
-CREATE TABLE hei_admin
+CREATE TABLE `hei_admin`
 (
     `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
     `user_name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '用户名',
@@ -20,7 +20,7 @@ CREATE TABLE hei_admin
     key (`user_name`)
  ) CHARSET=UTF8 COMMENT '后台用户表-小黑科技';
 
-CREATE TABLE hei_admin_info
+CREATE TABLE `hei_admin_info`
 (
     `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
     `admin_id` INT(11) NOT NULL DEFAULT 0 COMMENT '用户ID',
@@ -30,3 +30,4 @@ CREATE TABLE hei_admin_info
     `mobile`  CHAR(11) NOT NULL DEFAULT '' COMMENT '手机号',
     `status` TINYINT(8) NOT NULL DEFAULT 0 COMMENT '0 正常 1 禁用'
  ) CHARSET=UTF8 COMMENT '后台用户信息表-小黑科技';
+
