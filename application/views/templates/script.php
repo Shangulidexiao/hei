@@ -12,10 +12,13 @@
       var config = [{
           id:'menu',
           menu:[{
-              text:'首页内容',
+              text:'权限管理',
+              homePage:'main-index',
+              //collapsed:true,//是否打开二级菜单
               items:[
-                {id:'main-menu',text:'顶部导航',href:'main/menu.php'},
-                {id:'second-menu',text:'二级菜单',href:'main/second-menu.php'}
+                {id:'main-index',text:'首页面板',href:'/index/panel'},
+                {id:'main-menu',text:'菜单管理',href:'/auth/index'},
+                {id:'second-menu',text:'权限管理',href:'/auth/index'}
               ]
             }]
           },{
@@ -27,6 +30,9 @@
                 ]
               }]
           }];
+          new PageUtil.MainPage({
+            modulesConfig : config
+          });
     });
- 
+    
   </script>
