@@ -74,7 +74,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'pgsql:host=localhost;port=3306;dbname=hei_admin',
+	'dsn'	=> 'pdo:host=localhost;port=3306;dbname=hei_admin',
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'root',
