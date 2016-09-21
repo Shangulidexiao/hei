@@ -14,24 +14,25 @@ class Login extends CI_Controller {
         
 	public function doLogin()
 	{
-		$this->load->model('AdminModel','admin');
+            
+            $this->load->model('AdminModel','admin');
 	}
         
         public function doAdd(){
-                $this->load->library('encryption');
-                $this->load->model('AdminModel','admin');
-                $userName = $this->input->post('userName');
-                $password = $this->input->post('password');
-                
-                $admin['user_name'] = $userName;
-                $admin['password'] = password_hash($password, PASSWORD_BCRYPT );
-                $admin['last_ip'] = $this->input->ip_address();
-                $insertId = $this->admin->add($admin);
-                if($insertId){
-                    echo 'add success';
-                }else{
-                    echo 'add faild';
-                }
+            $this->load->library('encryption');
+            $this->load->model('AdminModel','admin');
+            $userName = $this->input->post('userName');
+            $password = $this->input->post('password');
+
+            $admin['user_name'] = $userName;
+            $admin['password'] = password_hash($password, PASSWORD_BCRYPT );
+            $admin['last_ip'] = $this->input->ip_address();
+            $insertId = $this->admin->add($admin);
+            if($insertId){
+                echo 'add success';
+            }else{
+                echo 'add faild';
+            }
         }
         
         public function doUpdate(){
@@ -94,5 +95,32 @@ class Login extends CI_Controller {
                 }
             }
             exit();
+        }
+        
+        public function captcha(){
+            $this->load->helper('captcha');
+            $vals = array(
+                'word'      => 'Random word',
+                'img_path'  => BASEPATH . 'public/captcha/',
+                'img_url'   => '/public/captcha/',
+                'font_path' => '/public/css/fonts/glyphicons-halflings-regular.ttf',
+                'img_width' => '150',
+                'img_height'    => 30,
+                'expiration'    => 7200,
+                'word_length'   => 8,
+                'font_size' => 16,
+                'img_id'    => 'Imageid',
+                'pool'      => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+
+                // White background and border, black text and red grid
+                'colors'    => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                )
+            );
+            $cap = create_captcha($vals);
+            echo $cap['image'];
         }
 }
