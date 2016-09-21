@@ -272,7 +272,7 @@
                             <label for="captcha" class="control-label glyphicon glyphicon-check"></label>
                             <input type="text" name="captcha" id="captcha" placeholder="验证码" tabindex="3" autocomplete="off"
                                    class="form-control-input  input-captcha"/>
-                            <img id="captchaImg" src="" alt="验证码" width="90" height="37" >
+                            <?=$captcha?>
                         </div>
                     </div>
                 </div>

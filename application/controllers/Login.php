@@ -9,12 +9,12 @@ class Login extends CI_Controller {
 	public function index()
 	{
             $this->load->helper(array('form','url'));
-            $this->load->view('login/login');
+            $login['captcha'] =$this->captcha();
+            $this->load->view('login/login',$login);
 	}
         
 	public function doLogin()
 	{
-            
             $this->load->model('AdminModel','admin');
 	}
         
@@ -84,6 +84,11 @@ class Login extends CI_Controller {
                 $error = $this->form_validation->error('password') AND ajaxJson($error,300);
                 $error = $this->form_validation->error('captcha') AND ajaxJson($error,300);
             }else{
+                $this->load->library('session');
+                $sessionCaptcha = $this->session->captcha;
+                if($captcha !== $sessionCaptcha){
+                    ajaxJson('登录失败,验证码不正确');
+                }
                 $admin = $this->admin->getOne(array('user_name'=>$userName));
                 if(isset($admin['password']) && password_verify($password, $admin['password'])){
                     $this->input->set_cookie('uid',$admin['user_name'],3600*24,'','/','','',TRUE);
@@ -99,28 +104,32 @@ class Login extends CI_Controller {
         
         public function captcha(){
             $this->load->helper('captcha');
+            $this->load->library('session');
             $vals = array(
-                'word'      => 'Random word',
-                'img_path'  => BASEPATH . 'public/captcha/',
+                'img_path'  => 'public/captcha/',
                 'img_url'   => 'http://centos.localhost.com/public/captcha/',
-                'font_path' => '/public/css/fonts/glyphicons-halflings-regular.ttf',
-                'img_width' => '150',
-                'img_height'    => 30,
+                'font_path' => 'public/css/fonts/georgia.ttf',
+                'img_width' => 90,
+                'img_height'    => 37,
                 'expiration'    => 7200,
-                'word_length'   => 8,
+                'word_length'   => 4,
                 'font_size' => 16,
-                'img_id'    => 'Imageid',
+                'img_id'    => 'captchaImg',
                 'pool'      => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
 
                 // White background and border, black text and red grid
                 'colors'    => array(
                     'background' => array(255, 255, 255),
-                    'border' => array(255, 255, 255),
+                    'border' => array(204,204,204),
                     'text' => array(0, 0, 0),
-                    'grid' => array(255, 40, 40)
+                    'grid' => array(34,139,34)
                 )
             );
             $cap = create_captcha($vals);
-            var_dump($cap);
+            if($cap){
+                $this->session->set_userdata(array('captcha'=>$cap['word']));
+                return $cap['image'];
+            }
+            return '';
         }
 }
