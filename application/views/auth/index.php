@@ -41,6 +41,14 @@
             </div>
           </div>
           <div class="row">
+            <div class="control-group span8 ">
+              <label class="control-label">父id：</label>
+              <div class="controls bui-form-group">
+                <input name="parent_id" type="text" data-rules="{required:true}" class="input-normal control-text">
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="control-group span8">
               <label class="control-label">排序：</label>
               <div class="controls control-row4">
@@ -81,7 +89,7 @@
             {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
             {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
             {title : '操作',width:200,renderer : function(){
-                    return '<span class="grid-command btn-add">添加子菜单</span><span class="grid-command btn-edit">编辑</span>';
+                    return '<span class="grid-command btn-edit">编辑</span>';
             }}
           ],
       //默认的数据
@@ -115,6 +123,12 @@
             listeners : {
               'click' : delFunction
             }
+          },{
+            btnCls : 'button button-small',
+            text : '<i class="icon-plus"></i>添加子菜单',
+            listeners : {
+              'click' : addSubFunction
+            }
           }]
         }
 
@@ -137,7 +151,18 @@
       var newData = {url :'请输入菜单地址',name:'请输入菜单名称'};
       editing.add(newData); //添加记录后，直接编辑
     }
-
+    function addSubFunction(){
+      var selections = grid.getSelection();
+      if(selections.length === 1){
+        var newData = {"parent_id":selections[0].id,"order_by":0};
+        editing.add(newData); //添加记录后，直接编辑
+      }else{
+          BUI.Message.Alert('请选择一个父元素',function(){
+             return ;
+        },'error');
+      }
+      
+    }
     function delFunction(){
       var selections = grid.getSelection();
       store.remove(selections);
