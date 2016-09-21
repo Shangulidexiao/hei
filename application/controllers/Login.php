@@ -121,6 +121,6 @@ class Login extends CI_Controller {
                 )
             );
             $cap = create_captcha($vals);
-            echo $cap['image'];
+            var_dump($cap);
         }
 }
