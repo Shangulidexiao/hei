@@ -102,7 +102,7 @@ class Login extends CI_Controller {
             $vals = array(
                 'word'      => 'Random word',
                 'img_path'  => BASEPATH . 'public/captcha/',
-                'img_url'   => '/public/captcha/',
+                'img_url'   => 'http://centos.localhost.com/public/captcha/',
                 'font_path' => '/public/css/fonts/glyphicons-halflings-regular.ttf',
                 'img_width' => '150',
                 'img_height'    => 30,
