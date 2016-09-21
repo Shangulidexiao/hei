@@ -8,8 +8,8 @@ class Login extends CI_Controller {
 	 */
 	public function index()
 	{
-            $this->load->helper(array('form','url'));
             $login['captcha'] =$this->captcha();
+            $this->load->helper(array('form','url'));
             $this->load->view('login/login',$login);
 	}
         
@@ -43,13 +43,8 @@ class Login extends CI_Controller {
         }
         
         public function doTest(){
-            $this->load->model('AdminModel','admin');
-            $admin = $this->admin->getOne(array('id'=>6));
-            if(password_verify('madison1', $admin['password'])){
-                echo 'success';
-            }else{
-                echo 'falid';
-            }
+            $this->load->library('session');
+            echo $this->session->captcha;
         }
         
         public function doAc(){
@@ -86,8 +81,8 @@ class Login extends CI_Controller {
             }else{
                 $this->load->library('session');
                 $sessionCaptcha = $this->session->captcha;
-                if($captcha !== $sessionCaptcha){
-                    ajaxJson('登录失败,验证码不正确');
+                if(strtolower($captcha) !== strtolower($sessionCaptcha)){
+                    ajaxJson('登录失败,验证码不正确',300);
                 }
                 $admin = $this->admin->getOne(array('user_name'=>$userName));
                 if(isset($admin['password']) && password_verify($password, $admin['password'])){
@@ -96,7 +91,7 @@ class Login extends CI_Controller {
                     $this->input->set_cookie('pkey', md5(PKEY . UKEY . $admin['user_name']),3600*24,'','/','','',TRUE);
                     ajaxJson('登录成功');
                 }else{
-                    ajaxJson('登录失败,用户名或密码不正确');
+                    ajaxJson('登录失败,用户名或密码不正确',300);
                 }
             }
             exit();
@@ -107,7 +102,7 @@ class Login extends CI_Controller {
             $this->load->library('session');
             $vals = array(
                 'img_path'  => 'public/captcha/',
-                'img_url'   => 'http://centos.localhost.com/public/captcha/',
+                'img_url'   => 'http://hei.xiaohei.com/public/captcha/',
                 'font_path' => 'public/css/fonts/georgia.ttf',
                 'img_width' => 90,
                 'img_height'    => 37,
