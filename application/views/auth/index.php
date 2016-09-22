@@ -9,6 +9,47 @@
  </head>
  <body>
     <div class="container">
+        <!-- sreach start -->
+        <div class="row">
+          <div class="span24">
+            <form id="searchForm" class="form-horizontal" tabindex="0" style="outline: none;">
+              <div class="row">
+                <div class="control-group span8">
+                  <label class="control-label">供应商编码：</label>
+                  <div class="controls">
+                    <input type="text" name="a" class="control-text">
+                  </div>
+                </div>
+                <div class="control-group span8">
+                  <label class="control-label">供应商编码：</label>
+                  <div class="controls">
+                    <input type="text" name="b" class="control-text">
+                  </div>
+                </div>
+                <div class="control-group span8">
+                  <label class="control-label">供应商编码：</label>
+                  <div class="controls">
+                    <input type="text" name="c" class="control-text">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="control-group span10">
+                  <label class="control-label">起始日期：</label>
+                  <div class="controls bui-form-group" data-rules="{dateRange : true}">
+                    <input name="start" data-tip="{text : '起始日期'}" data-rules="{required:true}" data-messages="{required:'起始日期不能为空'}" class="input-small calendar" type="text"><label>&nbsp;-&nbsp;</label>
+                    <input name="end" data-rules="{required:true}" data-messages="{required:'结束日期不能为空'}" class="input-small calendar" type="text">
+                  </div>
+                </div>
+                <div class="form-actions span5">
+                  <button id="btnSearch" type="submit" class="button button-primary">搜索</button>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+        </div> 
         <div id="grid">
             
         </div>
@@ -96,7 +137,7 @@
       data = <?=$data?>,
       store = new Store({
         data:data,
-        autoLoad:true
+        pageSize:3	// 配置分页数目
       }),
       editing = new Grid.Plugins.DialogEditing({
         contentId : 'content',
@@ -108,6 +149,7 @@
         width : 700,
         forceFit : true,
         store : store,
+        emptyDataTpl : '<div class="centered"><h2>查询的数据不存在</h2></div>',
         plugins : [Grid.Plugins.CheckSelection,editing],
         tbar:{
           items : [{
@@ -116,6 +158,12 @@
             listeners : {
               'click' : addFunction
             }
+          },{
+            btnCls : 'button button-small',
+            text : '<i class="icon-plus"></i>添加子菜单',
+            listeners : {
+              'click' : addSubFunction
+            }
           },
           {
             btnCls : 'button button-small',
@@ -123,13 +171,11 @@
             listeners : {
               'click' : delFunction
             }
-          },{
-            btnCls : 'button button-small',
-            text : '<i class="icon-plus"></i>添加子菜单',
-            listeners : {
-              'click' : addSubFunction
-            }
           }]
+        },            // 底部工具栏
+        bbar:{
+            // pagingBar:表明包含分页栏
+            pagingBar:true
         }
 
       });
