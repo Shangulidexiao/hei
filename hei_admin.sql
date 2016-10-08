@@ -1,7 +1,5 @@
-/* 
- * hei_admin sql
- */
 /**
+ * hei_admin sql
  * Author:  madison
  * Created: 2016-9-10
  */
