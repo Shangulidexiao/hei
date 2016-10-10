@@ -123,8 +123,9 @@ class Login extends CI_Controller {
             $cap = create_captcha($vals);
             if($cap){
                 $this->session->set_userdata(array('captcha'=>$cap['word']));
-                return $cap['image'];
             }
-            return '';
+            return isset($cap['image']) ? $cap['image'] : '';
         }
+        
+        
 }
