@@ -9,7 +9,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
             $login['captcha'] =$this->captcha();
-            $this->load->helper(array('form','url'));
+            $this->load->helper(array('form','url','site'));
             $this->load->view('login/login',$login);
 	}
         
@@ -21,11 +21,12 @@ class Login extends CI_Controller {
         public function doAdd(){
             $this->load->library('encryption');
             $this->load->model('AdminModel','admin');
+            $this->load->helper('site');
             $userName = $this->input->post('userName');
             $password = $this->input->post('password');
 
             $admin['user_name'] = $userName;
-            $admin['password'] = password_hash($password, PASSWORD_BCRYPT );
+            $admin['password'] = password($password);
             $admin['last_ip'] = $this->input->ip_address();
             $insertId = $this->admin->add($admin);
             if($insertId){
@@ -37,7 +38,8 @@ class Login extends CI_Controller {
         
         public function doUpdate(){
             $this->load->model('AdminModel','admin');
-            $adminUdate['password'] = password_hash('madison', PASSWORD_BCRYPT );
+            $this->load->helper('site');
+            $adminUdate['password'] = password('madison');
             $adminUdate['id'] = 6;
             $this->admin->update($adminUdate);
         }
@@ -50,7 +52,7 @@ class Login extends CI_Controller {
         public function doAc(){
             $this->load->model('AdminModel','admin');
             $this->load->library('form_validation');
-            $this->load->helper('json');
+            $this->load->helper(array('json','site'));
             $userName = $this->input->post('userName');
             $password = $this->input->post('password');
             $captcha = $this->input->post('captcha');
@@ -85,7 +87,7 @@ class Login extends CI_Controller {
                     ajaxJson('登录失败,验证码不正确',300);
                 }
                 $admin = $this->admin->getOne(array('user_name'=>$userName));
-                if(isset($admin['password']) && password_verify($password, $admin['password'])){
+                if(isset($admin['password']) && checkPassword($password, $admin['password'])){
                     $this->input->set_cookie('uid',$admin['user_name'],3600*24,'','/','','',TRUE);
                     $this->input->set_cookie('ukey', UKEY,3600*24,'','/','','',TRUE);
                     $this->input->set_cookie('pkey', md5(PKEY . UKEY . $admin['user_name']),3600*24,'','/','','',TRUE);
