@@ -18,7 +18,11 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 #-------------------------
 /nbproject/
 .idea/*
+/hei/nbproject/private/
 
+#session captcha
+/public/captcha
+/public/session
 ## Sublime Text cache files
 *.tmlanguage.cache
 *.tmPreferences.cache

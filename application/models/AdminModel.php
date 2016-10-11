@@ -6,7 +6,8 @@
 
 class AdminModel extends CI_Model {
     
-    const TABLE_NAME = 'admin';
+    const TABLE_NAME = 'admin'; //表名
+    
     public function __construct() {
         parent::__construct();
     }
@@ -27,14 +28,14 @@ class AdminModel extends CI_Model {
         }
         $id = $params['id'];
         unset($params['id']);
-        if($param['create_id']){
-            unset($param['create_id']);
+        if(isset($params['create_id'])){
+            unset($params['create_id']);
         }
-        if($param['create_time']){
-            unset($param['create_time']);
+        if(isset($params['create_time'])){
+            unset($params['create_time']);
         }
         $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        return $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
     }
     
     /**
@@ -46,15 +47,13 @@ class AdminModel extends CI_Model {
         if(empty($params) || empty($params['id'])){
             return false;
         }
-        
-        $this->db->where($params)->delete(self::TABLE_NAME);
+        return $this->db->where($params)->delete(self::TABLE_NAME);
     }
     
     public function getOne(ARRAY $params=array()){
         if(empty($params['user_name']) && empty($params['id'])){
             return false;
         }
-        
         $query = $this->db->where($params)->get(self::TABLE_NAME,1);
         return $query->row_array();
     }

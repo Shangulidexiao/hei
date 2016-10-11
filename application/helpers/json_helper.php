@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *  CodeIgniter 
+ *  json公用函数
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-10-11 1:14:48 
+ */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if ( ! function_exists('ajaxJson'))

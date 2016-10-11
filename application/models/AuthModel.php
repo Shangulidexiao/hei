@@ -48,7 +48,6 @@ class AuthModel extends CI_Model {
         if(empty($params) || empty($params['id'])){
             return false;
         }
-        
         $this->db->where($params)->delete(self::TABLE_NAME);
     }
     
@@ -56,12 +55,20 @@ class AuthModel extends CI_Model {
         if(empty($params['user_name']) && empty($params['id'])){
             return false;
         }
-        
         $query = $this->db->where($params)->get(self::TABLE_NAME,1);
         return $query->row_array();
     }
     
-    public function getList(){
+    public function getList($params = array()){
+        if(!empty($params['name'])){
+            $this->db->like('name',$params['name']);
+        }
+        if($params['parent_id'] !== ''){
+            $this->db->where('parent_id',(int)$params['parent_id']);
+        }
+        if($params['status'] !== ''){
+            $this->db->where('status',(int)$params['status']);
+        }
         $query = $this->db->get(self::TABLE_NAME);
         return $query->result_array();
     }
