@@ -13,10 +13,6 @@ class Login extends CI_Controller {
             $this->load->view('login/login',$login);
 	}
         
-	public function doLogin()
-	{
-            $this->load->model('AdminModel','admin');
-	}
         
         public function doAdd(){
             $this->load->library('encryption');
@@ -41,7 +37,12 @@ class Login extends CI_Controller {
             $this->load->helper('site');
             $adminUdate['password'] = password('madison');
             $adminUdate['id'] = 6;
-            $this->admin->update($adminUdate);
+            $isSuccess = $this->admin->update($adminUdate);
+            if($isSuccess){
+                echo " password update success";
+            }else{
+                echo " password update faild";
+            }
         }
         
         public function doTest(){

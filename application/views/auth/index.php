@@ -32,7 +32,7 @@
                     <div class="control-group span8">
                       <label class="control-label">状态：</label>
                       <div class="controls">
-                        <select>
+                          <select name="status">
                             <option value="">全部</option>
                             <option value="0">已启用</option>
                             <option value="1">已禁用</option>
