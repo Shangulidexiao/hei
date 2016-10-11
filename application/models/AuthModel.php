@@ -61,8 +61,13 @@ class AuthModel extends CI_Model {
         return $query->row_array();
     }
     
-    public function getList(){
-        $query = $this->db->get(self::TABLE_NAME);
+    public function getList($params = array()){
+        foreach ($params as $key => $value){
+            if($value === -1){
+                unset($params[$key]);
+            }
+        }
+        $query = $this->db->like($params)->get(self::TABLE_NAME);
         return $query->result_array();
     }
     

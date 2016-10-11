@@ -14,9 +14,14 @@ class Auth extends MY_Controller {
     }
     
     public function index(){
-        $authList = $this->auth->getList();
-        $auth['data'] = json_encode($authList);
-        $this->load->view('auth/index',$auth);
+        $this->load->view('auth/index');
     }
    
+    public function listData(){
+        $params['name'] = $this->input->get('name',-1);
+        $params['parent_id'] = $this->input->get('parent_id',-1);
+        $params['status'] = $this->input->get('status',-1);
+        $authList = $this->auth->getList($params);
+        die(json_encode($authList));
+    }
 }
