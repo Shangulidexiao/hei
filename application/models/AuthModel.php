@@ -4,7 +4,7 @@
  * 后台权限MODEL类
  */
 
-class AuthModel extends CI_Model {
+class AuthModel extends MY_Model {
     
     const TABLE_NAME = 'auth';
     public function __construct() {
@@ -69,9 +69,30 @@ class AuthModel extends CI_Model {
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
         }
-        $query = $this->db->get(self::TABLE_NAME);
-        return $query->result_array();
+        #总行数
+        $query['results'] = $this->db->count_all_results(self::TABLE_NAME);
+        
+        if(!empty($params['name'])){
+            $this->db->like('name',$params['name']);
+        }
+        if($params['parent_id'] !== ''){
+            $this->db->where('parent_id',(int)$params['parent_id']);
+        }
+        if($params['status'] !== ''){
+            $this->db->where('status',(int)$params['status']);
+        }
+        if(isset($params['page']['start']) && $params['page']['start'] > 0 ){
+            $this->db->limit($params['page']['start'],$params['page']['limit']);
+            unset($params['page']);
+        }else{
+            $this->db->limit($params['page']['limit']);
+        }
+        #列表
+        $query['rows'] = $this->db->get(self::TABLE_NAME)->result_array();
+        
+        return $query;
     }
     
+
 }
 

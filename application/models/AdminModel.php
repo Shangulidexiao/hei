@@ -4,7 +4,7 @@
  * 后台人员MODEL类
  */
 
-class AdminModel extends CI_Model {
+class AdminModel extends MY_Model {
     
     const TABLE_NAME = 'admin'; //表名
     

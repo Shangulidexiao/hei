@@ -17,11 +17,22 @@ var Store = Data.Store,
     //默认的数据
     store = new Store({
       url : '/auth/listData',
-      autoLoad:true
+      autoLoad:true,
+      pageSize:1,	// 配置分页数目
+      proxy : { //设置起始页码
+        pageStart : 1,
+        ajaxOptions : { //ajax的配置项，不要覆盖success,和error方法
+            traditional : true,
+            type : 'post'
+        }
+      }
     }),
     editing = new Grid.Plugins.DialogEditing({
       contentId : 'content',
-      triggerCls : 'btn-edit'
+      triggerCls : 'btn-edit',
+      editor: {
+        title: '菜单操作'
+      }
     }),
     grid = new Grid.Grid({
       render : '#grid',
@@ -30,6 +41,10 @@ var Store = Data.Store,
       forceFit : true,
       store : store,
       plugins : [Grid.Plugins.CheckSelection,editing],
+      bbar:{
+            // pagingBar:表明包含分页栏
+            pagingBar:true
+        },
       tbar:{
         items : [{
           btnCls : 'button button-small',

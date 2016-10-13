@@ -18,10 +18,14 @@ class Auth extends MY_Controller {
     }
    
     public function listData(){
-        $params['name'] = $this->input->get('name','');
-        $params['parent_id'] = $this->input->get('parent_id','');
-        $params['status'] = $this->input->get('status',-1);
+        $page['start'] = $this->input->get_post('start',1);
+        $page['limit'] = $this->input->get_post('limit',1);
+        $params['page'] = $page;
+        $params['name'] = $this->input->get_post('name','');
+        $params['parent_id'] = $this->input->get_post('parent_id','');
+        $params['status'] = $this->input->get_post('status',-1);
         $authList = $this->auth->getList($params);
+        
         die(json_encode($authList));
     }
 }
