@@ -14,10 +14,10 @@ class MY_Controller extends CI_Controller {
         if($isLogin === FALSE){
             redirect('/Login','refresh');
         }
-        
         $uid = $this->input->cookie('uid');
         $this->load->model('AdminModel','admin');
         $this->userInfo = $this->admin->getOne(array('user_name'=>$uid));
+        $this->menu();
     }
     
     public function isLogin(){
@@ -31,9 +31,21 @@ class MY_Controller extends CI_Controller {
         }else{
             return TRUE;
         }
-        
     }
     
+    public function menu(){
+        $this->load->model('MenuModel','menu');
+        $menu = $this->menu->getMenuAll();
+        $menuFirst = array();
+        foreach ($menu as $k1 => $v1) {
+            if($v1['parent_id'] === '0'){
+                $menuFirst[] = $v1;
+            }
+        }
+        
+        $this->load->vars(array('menuFirst'=>$menuFirst));
+        //var_dump($menuFirst);
+    }
     public function logOut(){
         $this->load->helper('cookie');
         delete_cookie('uid', '', '/');
