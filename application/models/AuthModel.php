@@ -60,17 +60,8 @@ class AuthModel extends MY_Model {
     }
     
     public function getList($params = array()){
-        if(!empty($params['name'])){
-            $this->db->like('name',$params['name']);
-        }
-        if($params['parent_id'] !== ''){
-            $this->db->where('parent_id',(int)$params['parent_id']);
-        }
-        if($params['status'] !== ''){
-            $this->db->where('status',(int)$params['status']);
-        }
         #总行数
-        $query['results'] = $this->db->count_all_results(self::TABLE_NAME);
+        $query['results'] = $this->getListNum($params);
         
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
@@ -82,8 +73,9 @@ class AuthModel extends MY_Model {
             $this->db->where('status',(int)$params['status']);
         }
         if(isset($params['page']['start']) && $params['page']['start'] > 0 ){
-            $this->db->limit($params['page']['start'],$params['page']['limit']);
-            unset($params['page']);
+            $this->db->limit($params['page']['limit'],$params['page']['start']);
+            
+            //unset($params['page']);
         }else{
             $this->db->limit($params['page']['limit']);
         }
@@ -91,6 +83,19 @@ class AuthModel extends MY_Model {
         $query['rows'] = $this->db->get(self::TABLE_NAME)->result_array();
         
         return $query;
+    }
+    
+    public function getListNum(ARRAY $params=array()){
+        if(!empty($params['name'])){
+            $this->db->like('name',$params['name']);
+        }
+        if($params['parent_id'] !== ''){
+            $this->db->where('parent_id',(int)$params['parent_id']);
+        }
+        if($params['status'] !== ''){
+            $this->db->where('status',(int)$params['status']);
+        }
+        return $this->db->count_all_results(self::TABLE_NAME);
     }
     
 

@@ -1,3 +1,10 @@
+/**
+ *  CodeIgniter 
+ *  
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-10-29 20:43:19 
+ */
+
 BUI.use('common/page'); //页面链接跳转
 BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
 var Store = Data.Store,
@@ -24,7 +31,9 @@ var Store = Data.Store,
         ajaxOptions : { //ajax的配置项，不要覆盖success,和error方法
             traditional : true,
             type : 'post'
-        }
+        },
+        method : 'POST', //更改为POST
+        save : 'data/save.php' //会附加一个saveType 的参数，add,remove,update
       }
     }),
     editing = new Grid.Plugins.DialogEditing({
@@ -103,16 +112,16 @@ var Store = Data.Store,
     var selections = grid.getSelection();
     store.remove(selections);
   }
-  var logEl = $('#log');
-  $('.btn-add').on('click',function(){
-      var selections = grid.getSelection();
-      alert(selections[0].id);
-
-  });
-  $('#btnSave').on('click',function(){
-    var records = store.getResult();
-    logEl.text(BUI.JSON.stringify(records));
-  });
+//  var logEl = $('#log');
+//  $('.btn-add').on('click',function(){
+//      var selections = grid.getSelection();
+//      alert(selections[0].id);
+//
+//  });
+//  $('#btnSave').on('click',function(){
+//    var records = store.getResult();
+//    logEl.text(BUI.JSON.stringify(records));
+//  });
     //创建表单，表单中的日历，不需要单独初始化
     var form = new BUI.Form.HForm({
       srcNode : '#searchForm'
@@ -126,6 +135,7 @@ var Store = Data.Store,
       return false;
     });
 });
+
 
 
 
