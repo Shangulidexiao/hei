@@ -29,14 +29,15 @@ class AuthModel extends MY_Model {
         }
         $id = $params['id'];
         unset($params['id']);
-        if($param['create_id']){
-            unset($param['create_id']);
+        if(isset($params['create_id'])){
+            unset($params['create_id']);
         }
-        if($param['create_time']){
-            unset($param['create_time']);
+        if(isset($params['create_time'])){
+            unset($params['create_time']);
         }
         $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
         $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        return $this->db->affected_rows();
     }
     
     /**
@@ -66,10 +67,10 @@ class AuthModel extends MY_Model {
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== ''){
+        if($params['parent_id'] !== NULL){
             $this->db->where('parent_id',(int)$params['parent_id']);
         }
-        if($params['status'] !== ''){
+        if($params['status'] !== NULL){
             $this->db->where('status',(int)$params['status']);
         }
         if(isset($params['page']['start']) && $params['page']['start'] > 0 ){

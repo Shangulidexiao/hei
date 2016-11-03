@@ -25,7 +25,7 @@ var Store = Data.Store,
     store = new Store({
       url : '/auth/listData',
       autoLoad:true,
-      pageSize:1,	// 配置分页数目
+      pageSize:10,	// 配置分页数目
       proxy : { //设置起始页码
         pageStart : 1,
         ajaxOptions : { //ajax的配置项，不要覆盖success,和error方法
@@ -33,7 +33,11 @@ var Store = Data.Store,
             type : 'post'
         },
         method : 'POST', //更改为POST
-        save : 'data/save.php' //会附加一个saveType 的参数，add,remove,update
+        save : {
+               addUrl : '/auth/add',
+               removeUrl : '/auth/remove',
+               updateUrl : '/auth/update'
+              }
       }
     }),
     editing = new Grid.Plugins.DialogEditing({
@@ -41,7 +45,8 @@ var Store = Data.Store,
       triggerCls : 'btn-edit',
       editor: {
         title: '菜单操作'
-      }
+      },
+       autoSave : true //自动添加和更新
     }),
     grid = new Grid.Grid({
       render : '#grid',
@@ -110,18 +115,10 @@ var Store = Data.Store,
   }
   function delFunction(){
     var selections = grid.getSelection();
+    console.log(selections);
     store.remove(selections);
   }
-//  var logEl = $('#log');
-//  $('.btn-add').on('click',function(){
-//      var selections = grid.getSelection();
-//      alert(selections[0].id);
-//
-//  });
-//  $('#btnSave').on('click',function(){
-//    var records = store.getResult();
-//    logEl.text(BUI.JSON.stringify(records));
-//  });
+
     //创建表单，表单中的日历，不需要单独初始化
     var form = new BUI.Form.HForm({
       srcNode : '#searchForm'
