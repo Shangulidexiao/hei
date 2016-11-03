@@ -44,7 +44,6 @@ class MY_Controller extends CI_Controller {
         }
         
         $this->load->vars(array('menuFirst'=>$menuFirst));
-        //var_dump($menuFirst);
     }
     public function logOut(){
         $this->load->helper('cookie');

@@ -22,10 +22,8 @@
         <div class="dl-main-nav">
           <ul id="J_Nav"  class="nav-list ks-clear">
             <?php foreach ($menuFirst as  $menu) { ?>
-                  <li class="nav-item dl-selected"><div class="nav-item-inner nav-storage"><?=$menu['name']?></div></li>
+                  <li class="nav-item dl-selected"><div class="nav-item-inner <?=$menu['icon']?>"><?=$menu['name']?></div></li>
             <?php  }?>
-            
-            
           </ul>
         </div>
         <ul id="J_NavContent" class="dl-tab-conten">
