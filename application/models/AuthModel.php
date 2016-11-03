@@ -46,10 +46,15 @@ class AuthModel extends MY_Model {
      * @return boolean
      */
     public function del(ARRAY $params=array()){
+        if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
+            $this->db->or_where_in('id',$params['idArr'])->delete(self::TABLE_NAME);
+            return $this->db->affected_rows();
+        }
         if(empty($params) || empty($params['id'])){
             return false;
         }
         $this->db->where($params)->delete(self::TABLE_NAME);
+        return $this->db->affected_rows();
     }
     
     public function getOne(ARRAY $params=array()){

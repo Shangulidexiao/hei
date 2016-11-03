@@ -61,6 +61,13 @@ class Auth extends MY_Controller {
     }
 
     public function remove(){
-        var_dump($this->input->post('id'));
+        $ids = $this->input->post('ids');
+        $idArr = explode(',', $ids);
+        $delRows = $this->auth->del(array('idArr'=>$idArr));
+        if($delRows){
+            ajaxJson('删除成功！最新id为'.$newId);
+        }else{
+            ajaxJson('删除失败',300);
+        }
     }
 }
