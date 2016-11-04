@@ -6,6 +6,7 @@
    <link href="<?php echo SITE_PUBLIC;?>/css/dpl-min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo SITE_PUBLIC;?>/css/bui-min.css" rel="stylesheet" type="text/css" />
    <link href="<?php echo SITE_PUBLIC;?>/css/main-min.css" rel="stylesheet" type="text/css" />
+   <link rel="shortcut icon" href="<?php echo SITE_PUBLIC;?>/img/hei/hei.ico">
  </head>
  <body>
     <div class="header">
