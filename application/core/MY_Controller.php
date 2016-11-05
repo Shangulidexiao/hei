@@ -52,7 +52,7 @@ class MY_Controller extends CI_Controller {
         $menuSecond = array();
         #生成顶级菜单
         foreach ($menu as $k1 => $v1) {
-            if($v1['parent_id'] === '0'){
+            if($v1['parent_id'] === '0' && $v1['is_show']==='1'){
                 $menuFirst[] = $v1;
                 unset($menu[$k1]);
             }
@@ -60,13 +60,14 @@ class MY_Controller extends CI_Controller {
         #生成二级菜单
         foreach ($menuFirst as $k2 => $v2) {
             foreach ($menu as $k3 => $v3) {
-                if($v3['parent_id'] === $v2['id']){
+                if($v3['parent_id'] === $v2['id']  && $v2['is_show']==='1'){
                     $menuSecond[$v2['id']][] = $v3;
                     unset($menu[$k3]);
                 }
             }
         }
         #生成三级菜单
+        $menuArr = array();
         foreach ($menuSecond as $k4 => $v4) {
             $menuSecondArr = array();#二级菜单 临时数组格式
             foreach ($v4 as $k5 => $v5) {
@@ -104,9 +105,13 @@ class MY_Controller extends CI_Controller {
     protected function isAuth(){
         $class      = $this->router->fetch_class();
         $method     = $this->router->fetch_method();
-        $auth       = '/'.$class.'/'.$method;
+        $auth       = strtolower('/'.$class.'/'.$method);
+        $authArrs = $this->menu->getMenuAll();
+        foreach ($authArrs as $authArr){
+            $this->authUrl[] = strtolower($authArr['url']);
+        }
         if(!in_array($auth, $this->authUrl)){
-            //die('没有权限呢');
+            die('没有权限呢');
         }
     }
 

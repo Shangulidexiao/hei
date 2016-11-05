@@ -11,7 +11,7 @@
  <body>
     <div class="hei-body">
         <div class="row">
-            <div class="span24">
+            <div class="span25">
                 <form id="searchForm" class="form-horizontal" tabindex="0" style="outline: none;">
                 <div class="row">
                     <div class="control-group span7">
@@ -36,7 +36,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="form-actions span3">
+                    <div class="form-actions span2 offset2">
                         <button id="btnSearch" type="submit" class="button button-primary">搜索</button>
                     </div>
                 </div>
