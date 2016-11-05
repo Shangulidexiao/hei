@@ -14,22 +14,19 @@
             <div class="span24">
                 <form id="searchForm" class="form-horizontal" tabindex="0" style="outline: none;">
                 <div class="row">
-                    <div class="control-group span8">
+                    <div class="control-group span7">
                       <label class="control-label">菜单名称：</label>
                       <div class="controls">
                         <input type="text" name="name" class="control-text">
                       </div>
                     </div>
-                    <div class="control-group span8">
+                    <div class="control-group span7">
                       <label class="control-label">父菜单id：</label>
                       <div class="controls">
                         <input type="text" name="parent_id" class="control-text">
                       </div>
                     </div>
-                    
-                </div>
-                <div class="row">
-                    <div class="control-group span8">
+                    <div class="control-group span7">
                       <label class="control-label">状态：</label>
                       <div class="controls">
                           <select name="status">
@@ -39,7 +36,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="form-actions span8 offset3">
+                    <div class="form-actions span3">
                         <button id="btnSearch" type="submit" class="button button-primary">搜索</button>
                     </div>
                 </div>
@@ -102,6 +99,17 @@
                   <select name="status" class="input-normal">
                       <option value="0">启用</option>
                       <option value="1">禁用</option>
+                  </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="control-group span8">
+              <label class="control-label">是否显示：</label>
+              <div class="controls control-row4">
+                  <select name="is_show" class="input-normal">
+                      <option value="0">不显示</option>
+                      <option value="1">显示</option>
                   </select>
               </div>
             </div>

@@ -72,10 +72,10 @@ class AuthModel extends MY_Model {
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== NULL){
+        if($params['parent_id'] !== ''){
             $this->db->where('parent_id',(int)$params['parent_id']);
         }
-        if($params['status'] !== NULL){
+        if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
         }
         if(isset($params['page']['start']) && $params['page']['start'] > 0 ){
@@ -86,8 +86,7 @@ class AuthModel extends MY_Model {
             $this->db->limit($params['page']['limit']);
         }
         #列表
-        $query['rows'] = $this->db->get(self::TABLE_NAME)->result_array();
-        
+        $query['rows'] = $this->db->order_by('order_by','DESC')->get(self::TABLE_NAME)->result_array();
         return $query;
     }
     

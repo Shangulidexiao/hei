@@ -37,6 +37,7 @@ class Auth extends MY_Controller {
         $update['name']       = $this->input->post('name');
         $update['icon']       = $this->input->post('icon');
         $update['status']     = $this->input->post('status');
+        $update['is_show']     = $this->input->post('is_show');
         $row = $this->auth->update($update);
         if($row){
             ajaxJson('更新成功！');
