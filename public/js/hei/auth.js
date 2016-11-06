@@ -1,6 +1,6 @@
 /**
  *  CodeIgniter 
- *  
+ *  权限
  * @author Han Jian <18335831710@163.com>
  * @date 2016-10-29 20:43:19 
  */
@@ -119,7 +119,6 @@ var Store = Data.Store,
            return ;
       },'error');
     }
-
   }
   function delFunction(){
     var selections = grid.getSelection();

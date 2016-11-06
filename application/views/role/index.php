@@ -15,15 +15,15 @@
                 <form id="searchForm" class="form-horizontal" tabindex="0" style="outline: none;">
                 <div class="row">
                     <div class="control-group span7">
-                      <label class="control-label">菜单名称：</label>
+                      <label class="control-label">角色名称：</label>
                       <div class="controls">
                         <input type="text" name="name" class="control-text">
                       </div>
                     </div>
                     <div class="control-group span7">
-                      <label class="control-label">父菜单id：</label>
+                      <label class="control-label">角色id：</label>
                       <div class="controls">
-                        <input type="text" name="parent_id" class="control-text">
+                        <input type="text" name="id" class="control-text">
                       </div>
                     </div>
                     <div class="control-group span7">
@@ -56,38 +56,15 @@
         <form id="J_Form" class="form-horizontal">
           <div class="row">
             <div class="control-group span8">
-              <label class="control-label"><s>*</s>菜单地址：</label>
-              <div class="controls">
-                <input name="url" type="text" data-rules="{required:true}" class="input-normal control-text">
-              </div>
-            </div>
-            <div class="control-group span8">
-              <label class="control-label"><s>*</s>菜单名称：</label>
+              <label class="control-label"><s>*</s>角色名称：</label>
               <div class="controls">
                 <input name="name" type="text" data-rules="{required:true}" class="input-normal control-text">
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="control-group span8 ">
-              <label class="control-label">菜单图标：</label>
-              <div id="range" class="controls bui-form-group">
-                <input name="icon" type="text" data-rules="{required:true}" class="input-normal control-text">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="control-group span8 ">
-              <label class="control-label">父id：</label>
-              <div class="controls bui-form-group">
-                <input name="parent_id" type="text" data-rules="{required:true}" class="input-normal control-text">
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="control-group span8">
               <label class="control-label">排序：</label>
-              <div class="controls bui-form-group">
+              <div class="controls  bui-form-group">
                 <input name="order_by" type="text" data-rules="{required:true}" class="input-normal control-text">
               </div>
             </div>
@@ -95,21 +72,10 @@
           <div class="row">
             <div class="control-group span8">
               <label class="control-label">状态：</label>
-              <div class="controls bui-form-group">
+              <div class="controls  bui-form-group">
                   <select name="status" class="input-normal">
                       <option value="0">启用</option>
                       <option value="1">禁用</option>
-                  </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="control-group span8">
-              <label class="control-label">是否显示：</label>
-              <div class="controls control-row4">
-                  <select name="is_show" class="input-normal">
-                      <option value="0">不显示</option>
-                      <option value="1">显示</option>
                   </select>
               </div>
             </div>
@@ -122,7 +88,7 @@
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/bui-min.js"></script>
   <!-- 如果不使用页面内部跳转，则下面 script 标签不需要,同时不需要引入 common/page -->
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/config.js"></script>
-  <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/hei/auth.js"></script>
+  <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/hei/role.js"></script>
     
 <body>
 </html> 

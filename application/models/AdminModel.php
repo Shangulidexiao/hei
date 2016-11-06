@@ -16,9 +16,10 @@ class AdminModel extends MY_Model {
         if(empty($params) || empty($params['user_name'])){
            return false; 
         }
-        $params['last_time'] = empty($params['last_time']) ? time() : $params['last_time'];
-        $params['create_time'] = empty($params['create_time']) ? time() : $params['create_time'];
+        $params['last_time']    = empty($params['last_time']) ? time() : $params['last_time'];
+        $params['create_time']  = empty($params['create_time']) ? time() : $params['create_time'];
         $this->db->insert(self::TABLE_NAME,$params);
+        echo $this->db->last_query();
         return $this->db->insert_id();
     }
     
@@ -35,7 +36,9 @@ class AdminModel extends MY_Model {
             unset($params['create_time']);
         }
         $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        return $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        
+        return $this->db->affected_rows();
     }
     
     /**

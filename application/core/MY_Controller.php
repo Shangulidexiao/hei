@@ -60,7 +60,7 @@ class MY_Controller extends CI_Controller {
         #生成二级菜单
         foreach ($menuFirst as $k2 => $v2) {
             foreach ($menu as $k3 => $v3) {
-                if($v3['parent_id'] === $v2['id']  && $v2['is_show']==='1'){
+                if($v3['parent_id'] === $v2['id']  && $v3['is_show']==='1'){
                     $menuSecond[$v2['id']][] = $v3;
                     unset($menu[$k3]);
                 }
@@ -110,7 +110,11 @@ class MY_Controller extends CI_Controller {
         foreach ($authArrs as $authArr){
             $this->authUrl[] = strtolower($authArr['url']);
         }
+        $noAuth = array('/index/logout');#不需要权限认证
         if(!in_array($auth, $this->authUrl)){
+            if(in_array($auth, $noAuth)){
+                return;
+            }
             die('没有权限呢');
         }
     }
