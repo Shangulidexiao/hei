@@ -72,13 +72,13 @@
             <div class="control-group span8 ">
               <label class="control-label">密码：</label>
               <div id="range" class="controls bui-form-group">
-                  <input name="password" type="password" data-rules="" class="input-normal control-text">
+                  <input name="password" id="password" type="password" data-rules="" class="input-normal control-text">
               </div>
             </div>
             <div class="control-group span8 ">
               <label class="control-label">重复密码：</label>
               <div id="range" class="controls bui-form-group">
-                <input name="repassword" type="password" data-rules="" class="input-normal control-text">
+                <input name="repassword" type="password" data-messages="{regexp:'两次密码不一致'}" data-rules="{equalTo:'#password'}" class="input-normal control-text">
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@
             <div class="control-group span8 ">
               <label class="control-label">邮箱：</label>
               <div class="controls bui-form-group">
-                <input name="email" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="email" type="text" data-rules="{email:true}" class="input-normal control-text">
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@
             <div class="control-group span8 ">
               <label class="control-label">手机号：</label>
               <div class="controls bui-form-group">
-                <input name="mobile" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="mobile" type="text" data-messages="{regexp:'不是有效的手机号'}" data-rules="{regexp:/^1\d{10}$/}" class="input-normal control-text">
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@
             <div class="control-group span8">
               <label class="control-label">排序：</label>
               <div class="controls bui-form-group">
-                <input name="order_by" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="order_by" type="text" data-rules="{number:true}" class="input-normal control-text">
               </div>
             </div>
           </div>

@@ -80,7 +80,7 @@
             <div class="control-group span8 ">
               <label class="control-label">父id：</label>
               <div class="controls bui-form-group">
-                <input name="parent_id" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="parent_id" type="text" data-rules="{number:true}" class="input-normal control-text">
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
             <div class="control-group span8">
               <label class="control-label">排序：</label>
               <div class="controls bui-form-group">
-                <input name="order_by" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="order_by" type="text" data-rules="{number:true}" class="input-normal control-text">
               </div>
             </div>
           </div>
