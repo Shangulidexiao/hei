@@ -1,6 +1,6 @@
 /**
  *  CodeIgniter 
- *  
+ *  权限
  * @author Han Jian <18335831710@163.com>
  * @date 2016-10-29 20:43:19 
  */
@@ -9,6 +9,7 @@ BUI.use('common/page'); //页面链接跳转
 BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
+    isShowObj = {"0" : "不显示","1" : "显示"},
     columns = [
         {title : 'id',dataIndex :'id'},
         {title : '菜单地址',dataIndex :'url',editor : {xtype : 'text',validator : validFn}},
@@ -17,6 +18,7 @@ var Store = Data.Store,
         {title : '父id',dataIndex :'parent_id'},
         {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
+        {title : '是否显示',dataIndex :'is_show',renderer : Grid.Format.enumRenderer(isShowObj)},
         {title : '操作',width:200,renderer : function(){
                 return '<span class="grid-command btn-edit">编辑</span>';
         }}
@@ -38,7 +40,12 @@ var Store = Data.Store,
                removeUrl : '/auth/remove',
                updateUrl : '/auth/update'
               }
-      }
+      },
+        params : {
+          name : '',
+          parent_id : '',
+          status : ''
+        }
     }),
     editing = new Grid.Plugins.DialogEditing({
       contentId : 'content',
@@ -46,12 +53,13 @@ var Store = Data.Store,
       editor: {
         title: '菜单操作'
       },
-       autoSave : true //自动添加和更新
+      forceFit: true,	// 列宽按百分比自适应
+      autoSave : true //自动添加和更新
     }),
     grid = new Grid.Grid({
       render : '#grid',
       columns : columns,
-      width : 700,
+      width : 1000,
       forceFit : true,
       store : store,
       plugins : [Grid.Plugins.CheckSelection,editing],
@@ -111,7 +119,6 @@ var Store = Data.Store,
            return ;
       },'error');
     }
-
   }
   function delFunction(){
     var selections = grid.getSelection();

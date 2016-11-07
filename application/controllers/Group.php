@@ -1,21 +1,23 @@
 <?php
 
-/* 
- * 权限控制器
- * @date    2016-09-15
- * @author    hj<18335831710@163.com>
+/**
+ *  CodeIgniter 
+ *  组控制器
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-11-6 16:51:49 
  */
 
-class Auth extends MY_Controller {
+
+class Group extends MY_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('AuthModel','auth');
+        $this->load->model('GroupModel','group');
         $this->load->helpers('json');
     }
     
     public function index(){
-        $this->load->view('auth/index');
+        $this->load->view('group/index');
     }
    
     public function listData(){
@@ -25,20 +27,16 @@ class Auth extends MY_Controller {
         $params['name'] = $this->input->get_post('name');
         $params['parent_id'] = $this->input->get_post('parent_id');
         $params['status'] = $this->input->get_post('status');
-        $authList = $this->auth->getList($params);
-        die(json_encode($authList));
+        $roleList = $this->group->getList($params);
+        die(json_encode($roleList));
     }
 
     public function update(){
-        $update['id']  = $this->input->post('id');
-        $update['parent_id']  = $this->input->post('parent_id');
+        $update['id']         = $this->input->post('id');
         $update['order_by']   = $this->input->post('order_by');
-        $update['url']        = $this->input->post('url');
         $update['name']       = $this->input->post('name');
-        $update['icon']       = $this->input->post('icon');
         $update['status']     = $this->input->post('status');
-        $update['is_show']     = $this->input->post('is_show');
-        $row = $this->auth->update($update);
+        $row = $this->group->update($update);
         if($row){
             ajaxJson('更新成功！');
         }else{
@@ -47,13 +45,11 @@ class Auth extends MY_Controller {
     }
 
     public function add(){
-        $add['parent_id']     = $this->input->post('parent_id');
+        $add['parent_id']            = $this->input->post('parent_id');
         $add['order_by']      = $this->input->post('order_by');
-        $add['url']           = $this->input->post('url');
         $add['name']          = $this->input->post('name');
-        $add['icon']          = $this->input->post('icon');
         $add['status']        = $this->input->post('status');
-        $newId = $this->auth->add($add);
+        $newId = $this->group->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
         }else{
@@ -64,7 +60,7 @@ class Auth extends MY_Controller {
     public function remove(){
         $ids = $this->input->post('ids');
         $idArr = explode(',', $ids);
-        $delRows = $this->auth->del(array('idArr'=>$idArr));
+        $delRows = $this->group->del(array('idArr'=>$idArr));
         if($delRows){
             ajaxJson('删除成功！最新id为'.$newId);
         }else{

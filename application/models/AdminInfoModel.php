@@ -1,42 +1,38 @@
 <?php
 
-/* 
- * 后台权限MODEL类
+/**
+ *  CodeIgniter 
+ *  后台人员信息
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-11-6 18:56:24 
  */
 
-class AuthModel extends MY_Model {
+class AdminInfoModel extends MY_Model {
     
-    const TABLE_NAME = 'auth';
+    const TABLE_NAME = 'admin';
+    const TABLE_NAME_INFO = 'admin_info';
+    
     public function __construct() {
         parent::__construct();
     }
     
     public function add(ARRAY $params=array()){
-        if(empty($params) || empty($params['url'])){
+        if(empty($params)){
            return false; 
         }
-        $params['order_by'] = empty($params['order_by']) ? 0 : $params['order_by'];
-        $params['create_time'] = empty($params['create_time']) ? time() : $params['create_time'];
-        $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
         $params['status'] = empty($params['status']) ? 0 : $params['status'];
-        $this->db->insert(self::TABLE_NAME,$params);
+        $this->db->insert(self::TABLE_NAME_INFO,$params);
         return $this->db->insert_id();
     }
     
     public function update(ARRAY $params=array()){
-        if(empty($params) || empty($params['id'])){
+        if(empty($params) || empty($params['admin_id'])){
             return false;
         }
-        $id = $params['id'];
-        unset($params['id']);
-        if(isset($params['create_id'])){
-            unset($params['create_id']);
-        }
-        if(isset($params['create_time'])){
-            unset($params['create_time']);
-        }
-        $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        $admin_id = $params['admin_id'];
+        unset($params['admin_id']);
+        
+        $this->db->where('admin_id',$admin_id)->update(self::TABLE_NAME_INFO,$params);
         return $this->db->affected_rows();
     }
     
@@ -48,12 +44,14 @@ class AuthModel extends MY_Model {
     public function del(ARRAY $params=array()){
         if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
             $this->db->or_where_in('id',$params['idArr'])->delete(self::TABLE_NAME);
+            $this->db->or_where_in('admin_id',$params['idArr'])->delete(self::TABLE_NAME_INFO);
             return $this->db->affected_rows();
         }
         if(empty($params) || empty($params['id'])){
             return false;
         }
         $this->db->where($params)->delete(self::TABLE_NAME);
+        $this->db->where(array('admin_id'=>$params['id']))->delete(self::TABLE_NAME_INFO);
         return $this->db->affected_rows();
     }
     
@@ -65,6 +63,9 @@ class AuthModel extends MY_Model {
         return $query->row_array();
     }
     
+    /**
+     * 列表
+     */
     public function getList($params = array()){
         #总行数
         $query['results'] = $this->getListNum($params);
@@ -72,8 +73,8 @@ class AuthModel extends MY_Model {
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== ''){
-            $this->db->where('parent_id',(int)$params['parent_id']);
+        if($params['mobile'] !== ''){
+            $this->db->where('mobile',(int)$params['mobile']);
         }
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
@@ -85,17 +86,26 @@ class AuthModel extends MY_Model {
         }else{
             $this->db->limit($params['page']['limit']);
         }
+        $this->db->join(self::TABLE_NAME,'hei_admin.id = hei_admin_info.admin_id', 'right');
+        
         #列表
-        $query['rows'] = $this->db->order_by('order_by','DESC')->get(self::TABLE_NAME)->result_array();
+        $query['rows'] = $this->db->select('hei_admin_info.*,hei_admin.user_name,hei_admin.order_by,hei_admin.status,hei_admin.id')
+                ->order_by('order_by','DESC')
+                ->get(self::TABLE_NAME_INFO)
+                ->result_array();
+        
         return $query;
     }
     
+    /**
+     * 计算列表总数
+     */
     public function getListNum(ARRAY $params=array()){
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== ''){
-            $this->db->where('parent_id',(int)$params['parent_id']);
+        if($params['mobile'] !== ''){
+            $this->db->where('mobile',$params['mobile']);
         }
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
