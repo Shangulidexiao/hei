@@ -7,7 +7,7 @@
 
 
 BUI.use('common/page'); //页面链接跳转
-BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
+BUI.use(['bui/grid','bui/data','bui/overlay'],function (Grid,Data,Overlay) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
     columns = [
@@ -16,7 +16,9 @@ var Store = Data.Store,
         {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
         {title : '操作',width:200,renderer : function(){
-                return '<span class="grid-command btn-edit">编辑</span>';
+                return '<span class="grid-command btn-edit">编辑</span>\n\
+                        <span class="grid-command btn-add-user">添加用户</span>\n\
+                            <span class="grid-command btn-add-auth">添加权限</span>';
         }}
       ],
     //默认的数据
@@ -82,7 +84,65 @@ var Store = Data.Store,
 
     });
   grid.render();
-
+  grid.on('cellclick',function  (ev) {
+          var record = ev.record, //点击行的记录
+            field = ev.field, //点击对应列的dataIndex
+            target = $(ev.domTarget),
+            roleId = record.id; //点击的元素
+            
+          if(target.hasClass('btn-add-user')){
+              var dialog = new Overlay.Dialog({
+                title:'添加用户',
+                width:500,
+                height:300,
+                mask:true,
+                buttons:[
+                  {
+                    text:'确定添加',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                      alert(0);
+                      this.close();
+                    }
+                  },{
+                    text:'关闭',
+                    elCls : 'button',
+                    handler : function(){
+                      this.close();
+                    }
+                  }
+                ], loader : {
+                    url : '/admin/adminList',
+                    autoLoad : true, //不自动加载
+                    params : {a : 'a'},//附加的参数
+                    lazyLoad : false //不延迟加载
+                    /*, //以下是默认选项
+                    dataType : 'text',   //加载的数据类型
+                    property : 'bodyContent', //将加载的内容设置到对应的属性
+                    loadMask : {
+                      //el , dialog 的body
+                    },
+                    lazyLoad : {
+                      event : 'show', //显示的时候触发加载
+                      repeat : true //是否重复加载
+                    },
+                    callback : function(text){
+                      var loader = this,
+                        target = loader.get('target'); //使用Loader的控件，此处是dialog
+                      //
+                    }
+                    */
+                  }
+              });
+               dialog.show();
+          }
+ 
+          if(target.hasClass('btn-add-auth')){
+            alert('添加权限');
+            console.log(record);
+          }
+ 
+        });
   function validFn (value,obj) {
     var records = store.getResult(),
       rst = '';

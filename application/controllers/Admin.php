@@ -109,4 +109,8 @@ class Admin extends MY_Controller {
             ajaxJson('删除失败',300);
         }
     }
+    
+    public function adminList(){
+        $this->load->view('admin/list');
+    }
 }
