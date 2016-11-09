@@ -7,7 +7,7 @@
  * @date 2016-11-9 18:56:24 
  */
 
-class AdminInfoModel extends MY_Model {
+class RoleAdminModel extends MY_Model {
     
     const TABLE_NAME = 'admin_role';
     
@@ -16,6 +16,9 @@ class AdminInfoModel extends MY_Model {
     }
     
 
-
+    public function getList(ARRAY $params=array()){
+        $query = $this->db->where($params)->select('admin_id,role_id')->get(self::TABLE_NAME);
+        return $query->result_array();
+    }
 }
 

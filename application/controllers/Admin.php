@@ -111,7 +111,8 @@ class Admin extends MY_Controller {
     }
     
     public function adminList(){
-        var_dump($this->admin->getList());
+        $this->load->model('RoleAdminModel','roleAdmin');
+        var_dump($this->roleAdmin->getList());
         $this->load->view('admin/list');
     
     }
