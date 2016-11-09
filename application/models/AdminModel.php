@@ -61,8 +61,12 @@ class AdminModel extends MY_Model {
         return $query->row_array();
     }
     
-    public function getList(){
-        $query = $this->db->get(self::TABLE_NAME);
+    public function getList(ARRAY $params=array()){
+
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
+        }
+        $query = $this->db->where($params)->select('id,user_name')->get(self::TABLE_NAME);
         return $query->result_array();
     }
     

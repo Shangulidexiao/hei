@@ -111,6 +111,8 @@ class Admin extends MY_Controller {
     }
     
     public function adminList(){
+        var_dump($this->admin->getList());
         $this->load->view('admin/list');
+    
     }
 }
