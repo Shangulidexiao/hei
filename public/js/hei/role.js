@@ -93,8 +93,8 @@ var Store = Data.Store,
           if(target.hasClass('btn-add-user')){
               var dialog = new Overlay.Dialog({
                 title:'添加用户',
-                width:500,
-                height:300,
+                width:1000,
+                height:400,
                 mask:true,
                 buttons:[
                   {
@@ -112,10 +112,11 @@ var Store = Data.Store,
                     }
                   }
                 ], loader : {
-                    url : '/admin/adminList',
+                    url : '/role/adminList',
                     autoLoad : true, //不自动加载
-                    params : {a : 'a'},//附加的参数
+                    params : {roleId :roleId},//附加的参数
                     lazyLoad : false //不延迟加载
+                    
                     /*, //以下是默认选项
                     dataType : 'text',   //加载的数据类型
                     property : 'bodyContent', //将加载的内容设置到对应的属性
@@ -156,7 +157,7 @@ var Store = Data.Store,
   }
 
   function addFunction(){
-    var newData = {url :'请输入菜单地址',name:'请输入菜单名称'};
+    var newData = {name:'请输入角色名称',order_by:0};
     editing.add(newData); //添加记录后，直接编辑
   }
   function delFunction(){

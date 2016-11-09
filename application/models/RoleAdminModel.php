@@ -17,7 +17,7 @@ class RoleAdminModel extends MY_Model {
     
 
     public function getList(ARRAY $params=array()){
-        $query = $this->db->where($params)->select('admin_id,role_id')->get(self::TABLE_NAME);
+        $query = $this->db->where($params)->select('admin_id')->get(self::TABLE_NAME);
         return $query->result_array();
     }
 }

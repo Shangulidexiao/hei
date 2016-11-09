@@ -109,11 +109,5 @@ class Admin extends MY_Controller {
             ajaxJson('删除失败',300);
         }
     }
-    
-    public function adminList(){
-        $this->load->model('RoleAdminModel','roleAdmin');
-        var_dump($this->roleAdmin->getList());
-        $this->load->view('admin/list');
-    
-    }
+   
 }

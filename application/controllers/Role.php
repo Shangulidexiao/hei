@@ -64,4 +64,20 @@ class Role extends MY_Controller {
             ajaxJson('删除失败',300);
         }
     }
+    
+    public function adminList(){
+        
+        $roleParams['role_id'] = $this->input->get('roleId');#角色id
+        
+        $this->load->model('RoleAdminModel','roleAdmin');
+        
+        $roleAdmin['admins'] = $this->admin->getList();#所有管理员的列表
+        $roleAdmin['roleAdmins'] = $this->roleAdmin->getList($roleParams);#此角色下的管理员
+        
+        $this->load->view('role/adminList',$roleAdmin);
+    }
+    
+    public function addAdmin(){
+        
+    }
 }
