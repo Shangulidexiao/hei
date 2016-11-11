@@ -1,18 +1,21 @@
 <?php
 
-/* 
- * 后台权限MODEL类
+/**
+ *  CodeIgniter 
+ *  
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-11-6 16:53:05 
  */
 
-class AuthModel extends MY_Model {
+class GroupModel extends MY_Model {
     
-    const TABLE_NAME = 'auth';
+    const TABLE_NAME = 'group';
     public function __construct() {
         parent::__construct();
     }
     
     public function add(ARRAY $params=array()){
-        if(empty($params) || empty($params['url'])){
+        if(empty($params) || empty($params['name'])){
            return false; 
         }
         $params['order_by'] = empty($params['order_by']) ? 0 : $params['order_by'];
@@ -105,4 +108,3 @@ class AuthModel extends MY_Model {
     
 
 }
-

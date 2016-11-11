@@ -1,31 +1,29 @@
 /**
  *  CodeIgniter 
- *  权限
+ *  角色
  * @author Han Jian <18335831710@163.com>
- * @date 2016-10-29 20:43:19 
+ * @date 2016-11-6 0:47:12 
  */
 
+
 BUI.use('common/page'); //页面链接跳转
-BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
+BUI.use(['bui/grid','bui/data','bui/overlay'],function (Grid,Data,Overlay) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
-    isShowObj = {"0" : "不显示","1" : "显示"},
     columns = [
         {title : 'id',dataIndex :'id'},
-        {title : '菜单地址',dataIndex :'url',editor : {xtype : 'text',validator : validFn}},
-        {title : '菜单名称',dataIndex :'name',editor : {xtype : 'text',rules : {required : true}}},
-        {title : '菜单图标',dataIndex :'icon'},
-        {title : '父id',dataIndex :'parent_id'},
+        {title : '角色名称',dataIndex :'name',editor : {xtype : 'text',rules : {required : true}}},
         {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
-        {title : '是否显示',dataIndex :'is_show',renderer : Grid.Format.enumRenderer(isShowObj)},
         {title : '操作',width:200,renderer : function(){
-                return '<span class="grid-command btn-edit">编辑</span>';
+                return '<span class="grid-command btn-edit">编辑</span>\n\
+                        <span class="grid-command btn-add-user">添加用户</span>\n\
+                            <span class="grid-command btn-add-auth">添加权限</span>';
         }}
       ],
     //默认的数据
     store = new Store({
-      url : '/auth/listData',
+      url : '/role/listData',
       autoLoad:true,
       pageSize:10,	// 配置分页数目
       proxy : { //设置起始页码
@@ -36,14 +34,14 @@ var Store = Data.Store,
         },
         method : 'POST', //更改为POST
         save : {
-               addUrl : '/auth/add',
-               removeUrl : '/auth/remove',
-               updateUrl : '/auth/update'
+               addUrl : '/role/add',
+               removeUrl : '/role/remove',
+               updateUrl : '/role/update'
               }
       },
         params : {
           name : '',
-          parent_id : '',
+          id : '',
           status : ''
         }
     }),
@@ -81,18 +79,71 @@ var Store = Data.Store,
           listeners : {
             'click' : delFunction
           }
-        },{
-          btnCls : 'button button-small',
-          text : '<i class="icon-plus"></i>添加子菜单',
-          listeners : {
-            'click' : addSubFunction
-          }
         }]
       }
 
     });
   grid.render();
-
+  grid.on('cellclick',function  (ev) {
+          var record = ev.record, //点击行的记录
+            field = ev.field, //点击对应列的dataIndex
+            target = $(ev.domTarget),
+            roleId = record.id; //点击的元素
+            
+          if(target.hasClass('btn-add-user')){
+              var dialog = new Overlay.Dialog({
+                title:'添加用户',
+                width:1000,
+                height:400,
+                mask:true,
+                buttons:[
+                  {
+                    text:'确定添加',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                      alert(0);
+                      this.close();
+                    }
+                  },{
+                    text:'关闭',
+                    elCls : 'button',
+                    handler : function(){
+                      this.close();
+                    }
+                  }
+                ], loader : {
+                    url : '/role/adminList',
+                    autoLoad : true, //不自动加载
+                    params : {roleId :roleId},//附加的参数
+                    lazyLoad : false //不延迟加载
+                    
+                    /*, //以下是默认选项
+                    dataType : 'text',   //加载的数据类型
+                    property : 'bodyContent', //将加载的内容设置到对应的属性
+                    loadMask : {
+                      //el , dialog 的body
+                    },
+                    lazyLoad : {
+                      event : 'show', //显示的时候触发加载
+                      repeat : true //是否重复加载
+                    },
+                    callback : function(text){
+                      var loader = this,
+                        target = loader.get('target'); //使用Loader的控件，此处是dialog
+                      //
+                    }
+                    */
+                  }
+              });
+               dialog.show();
+          }
+ 
+          if(target.hasClass('btn-add-auth')){
+            alert('添加权限');
+            console.log(record);
+          }
+ 
+        });
   function validFn (value,obj) {
     var records = store.getResult(),
       rst = '';
@@ -106,19 +157,8 @@ var Store = Data.Store,
   }
 
   function addFunction(){
-    var newData = {url :'请输入菜单地址',name:'请输入菜单名称'};
+    var newData = {name:'请输入角色名称',order_by:0};
     editing.add(newData); //添加记录后，直接编辑
-  }
-  function addSubFunction(){
-    var selections = grid.getSelection();
-    if(selections.length === 1){
-      var newData = {"parent_id":selections[0].id,"order_by":0};
-      editing.add(newData); //添加记录后，直接编辑
-    }else{
-        BUI.Message.Alert('请选择一个父元素',function(){
-           return ;
-      },'error');
-    }
   }
   function delFunction(){
     var selections = grid.getSelection();
@@ -142,7 +182,4 @@ var Store = Data.Store,
       return false;
     });
 });
-
-
-
 

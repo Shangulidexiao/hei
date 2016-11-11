@@ -1,21 +1,21 @@
 <?php
 
 /* 
- * 权限控制器
- * @date    2016-09-15
+ * 角色控制器
+ * @date    2016-11-6
  * @author    hj<18335831710@163.com>
  */
 
-class Auth extends MY_Controller {
+class Role extends MY_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('AuthModel','auth');
+        $this->load->model('RoleModel','role');
         $this->load->helpers('json');
     }
     
     public function index(){
-        $this->load->view('auth/index');
+        $this->load->view('role/index');
     }
    
     public function listData(){
@@ -23,22 +23,18 @@ class Auth extends MY_Controller {
         $page['limit']          = $this->input->get_post('limit');
         $params['page']         = $page;
         $params['name']         = $this->input->get_post('name');
-        $params['parent_id']    = $this->input->get_post('parent_id');
+        $params['id']           = $this->input->get_post('id');
         $params['status']       = $this->input->get_post('status');
-        $authList               = $this->auth->getList($params);
-        die(json_encode($authList));
+        $roleList               = $this->role->getList($params);
+        die(json_encode($roleList));
     }
 
     public function update(){
-        $update['id']           = $this->input->post('id');
-        $update['parent_id']    = $this->input->post('parent_id');
-        $update['order_by']     = $this->input->post('order_by');
-        $update['url']          = $this->input->post('url');
-        $update['name']         = $this->input->post('name');
-        $update['icon']         = $this->input->post('icon');
-        $update['status']       = $this->input->post('status');
-        $update['is_show']      = $this->input->post('is_show');
-        $row                    = $this->auth->update($update);
+        $update['id']         = $this->input->post('id');
+        $update['order_by']   = $this->input->post('order_by');
+        $update['name']       = $this->input->post('name');
+        $update['status']     = $this->input->post('status');
+        $row                  = $this->role->update($update);
         if($row){
             ajaxJson('更新成功！');
         }else{
@@ -47,13 +43,10 @@ class Auth extends MY_Controller {
     }
 
     public function add(){
-        $add['parent_id']     = $this->input->post('parent_id');
         $add['order_by']      = $this->input->post('order_by');
-        $add['url']           = $this->input->post('url');
         $add['name']          = $this->input->post('name');
-        $add['icon']          = $this->input->post('icon');
         $add['status']        = $this->input->post('status');
-        $newId                = $this->auth->add($add);
+        $newId                = $this->role->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
         }else{
@@ -64,11 +57,27 @@ class Auth extends MY_Controller {
     public function remove(){
         $ids        = $this->input->post('ids');
         $idArr      = explode(',', $ids);
-        $delRows    = $this->auth->del(array('idArr'=>$idArr));
+        $delRows    = $this->role->del(array('idArr'=>$idArr));
         if($delRows){
             ajaxJson('删除成功！最新id为'.$newId);
         }else{
             ajaxJson('删除失败',300);
         }
+    }
+    
+    public function adminList(){
+        
+        $roleParams['role_id'] = $this->input->get('roleId');#角色id
+        
+        $this->load->model('RoleAdminModel','roleAdmin');
+        
+        $roleAdmin['admins'] = $this->admin->getList();#所有管理员的列表
+        $roleAdmin['roleAdmins'] = $this->roleAdmin->getList($roleParams);#此角色下的管理员
+        
+        $this->load->view('role/adminList',$roleAdmin);
+    }
+    
+    public function addAdmin(){
+        
     }
 }

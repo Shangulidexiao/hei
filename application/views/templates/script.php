@@ -9,26 +9,28 @@
     <![endif]-->
   <script>
      BUI.use('common/main',function(){
-      var config = [{
-          id:'menu',
-          menu:[{
-              text:'权限管理',
-              homePage:'main-index',
-              //collapsed:true,//是否打开二级菜单
-              items:[
-                {id:'main-index',text:'首页面板',href:'/index/panel'},
-                {id:'main-menu',text:'菜单管理',href:'/auth/index'}
-              ]
-            }]
-          },{
-            id:'search',
-            menu:[{
-                text:'搜索页面',
-                items:[
-                  {id:'introduce',text:'搜索页面简介',href:'search/introduce.html'}
-                ]
-              }]
-          }];
+      var config = <?=$menuJson;?>;
+      // [{
+      //     id:'menu',
+      //     menu:[{
+      //         text:'权限管理',
+      //         homePage:'main-index',
+      //         //collapsed:true,//是否打开二级菜单
+      //         items:[
+      //           {id:'main-index',text:'首页面板',href:'/index/panel'},
+      //           {id:'main-menu',text:'菜单管理',href:'/auth/index'}
+      //         ]
+      //       }]
+      //     },{
+      //       id:'search',
+      //       menu:[{
+      //           text:'搜索页面',
+      //           items:[
+      //             {id:'introduce',text:'搜索页面简介',href:'search/introduce.html'}
+      //           ]
+      //         }]
+      //     }];
+
           new PageUtil.MainPage({
             modulesConfig : config
           });

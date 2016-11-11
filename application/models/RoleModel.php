@@ -1,18 +1,21 @@
 <?php
 
-/* 
- * 后台权限MODEL类
+/**
+ *  CodeIgniter 
+ *  角色模型
+ * @author Han Jian <18335831710@163.com>
+ * @date 2016-11-6 16:04:46 
  */
 
-class AuthModel extends MY_Model {
+class RoleModel extends MY_Model {
     
-    const TABLE_NAME = 'auth';
+    const TABLE_NAME = 'role';
     public function __construct() {
         parent::__construct();
     }
     
     public function add(ARRAY $params=array()){
-        if(empty($params) || empty($params['url'])){
+        if(empty($params) || empty($params['name'])){
            return false; 
         }
         $params['order_by'] = empty($params['order_by']) ? 0 : $params['order_by'];
@@ -72,8 +75,8 @@ class AuthModel extends MY_Model {
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== ''){
-            $this->db->where('parent_id',(int)$params['parent_id']);
+        if($params['id'] !== ''){
+            $this->db->where('id',(int)$params['id']);
         }
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
@@ -94,8 +97,8 @@ class AuthModel extends MY_Model {
         if(!empty($params['name'])){
             $this->db->like('name',$params['name']);
         }
-        if($params['parent_id'] !== ''){
-            $this->db->where('parent_id',(int)$params['parent_id']);
+        if($params['id'] !== ''){
+            $this->db->where('id',(int)$params['id']);
         }
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);
@@ -105,4 +108,3 @@ class AuthModel extends MY_Model {
     
 
 }
-

@@ -15,15 +15,15 @@
                 <form id="searchForm" class="form-horizontal" tabindex="0" style="outline: none;">
                 <div class="row">
                     <div class="control-group span7">
-                      <label class="control-label">菜单名称：</label>
+                      <label class="control-label">用户名：</label>
                       <div class="controls">
                         <input type="text" name="name" class="control-text">
                       </div>
                     </div>
                     <div class="control-group span7">
-                      <label class="control-label">父菜单id：</label>
+                      <label class="control-label">手机号：</label>
                       <div class="controls">
-                        <input type="text" name="parent_id" class="control-text">
+                        <input type="text" name="mobile" class="control-text">
                       </div>
                     </div>
                     <div class="control-group span7">
@@ -56,31 +56,45 @@
         <form id="J_Form" class="form-horizontal">
           <div class="row">
             <div class="control-group span8">
-              <label class="control-label"><s>*</s>菜单地址：</label>
+              <label class="control-label"><s>*</s>用户名：</label>
               <div class="controls">
-                <input name="url" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="user_name" type="text" data-rules="{required:true}" class="input-normal control-text">
               </div>
             </div>
             <div class="control-group span8">
-              <label class="control-label"><s>*</s>菜单名称：</label>
+              <label class="control-label"><s>*</s>真实姓名：</label>
               <div class="controls">
-                <input name="name" type="text" data-rules="{required:true}" class="input-normal control-text">
+                <input name="true_name" type="text" data-rules="{required:true}" class="input-normal control-text">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="control-group span8 ">
-              <label class="control-label">菜单图标：</label>
+              <label class="control-label">密码：</label>
               <div id="range" class="controls bui-form-group">
-                <input name="icon" type="text" data-rules="{required:true}" class="input-normal control-text">
+                  <input name="password" id="password" type="password" data-rules="" class="input-normal control-text">
+              </div>
+            </div>
+            <div class="control-group span8 ">
+              <label class="control-label">重复密码：</label>
+              <div id="range" class="controls bui-form-group">
+                <input name="repassword" type="password" data-messages="{regexp:'两次密码不一致'}" data-rules="{equalTo:'#password'}" class="input-normal control-text">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="control-group span8 ">
-              <label class="control-label">父id：</label>
+              <label class="control-label">邮箱：</label>
               <div class="controls bui-form-group">
-                <input name="parent_id" type="text" data-rules="{number:true}" class="input-normal control-text">
+                <input name="email" type="text" data-rules="{email:true}" class="input-normal control-text">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="control-group span8 ">
+              <label class="control-label">手机号：</label>
+              <div class="controls bui-form-group">
+                <input name="mobile" type="text" data-messages="{regexp:'不是有效的手机号'}" data-rules="{regexp:/^1\d{10}$/}" class="input-normal control-text">
               </div>
             </div>
           </div>
@@ -103,26 +117,14 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="control-group span8">
-              <label class="control-label">是否显示：</label>
-              <div class="controls control-row4">
-                  <select name="is_show" class="input-normal">
-                      <option value="0">不显示</option>
-                      <option value="1">显示</option>
-                  </select>
-              </div>
-            </div>
-          </div>
         </form>
         </div>
     </div> 
      
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/jquery-1.8.1.min.js"></script>
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/bui-min.js"></script>
-  <!-- 如果不使用页面内部跳转，则下面 script 标签不需要,同时不需要引入 common/page -->
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/config.js"></script>
-  <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/hei/auth.js"></script>
+  <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/hei/admin.js"></script>
     
 <body>
 </html> 

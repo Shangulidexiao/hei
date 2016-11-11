@@ -4,7 +4,7 @@
  * 后台人员MODEL类
  */
 
-class AdminModel extends CI_Model {
+class AdminModel extends MY_Model {
     
     const TABLE_NAME = 'admin'; //表名
     
@@ -16,9 +16,10 @@ class AdminModel extends CI_Model {
         if(empty($params) || empty($params['user_name'])){
            return false; 
         }
-        $params['last_time'] = empty($params['last_time']) ? time() : $params['last_time'];
-        $params['create_time'] = empty($params['create_time']) ? time() : $params['create_time'];
+        $params['last_time']    = empty($params['last_time']) ? time() : $params['last_time'];
+        $params['create_time']  = empty($params['create_time']) ? time() : $params['create_time'];
         $this->db->insert(self::TABLE_NAME,$params);
+        echo $this->db->last_query();
         return $this->db->insert_id();
     }
     
@@ -35,7 +36,9 @@ class AdminModel extends CI_Model {
             unset($params['create_time']);
         }
         $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        return $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
+        
+        return $this->db->affected_rows();
     }
     
     /**
@@ -58,8 +61,12 @@ class AdminModel extends CI_Model {
         return $query->row_array();
     }
     
-    public function getList(){
-        $query = $this->db->get(self::TABLE_NAME);
+    public function getList(ARRAY $params=array()){
+
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
+        }
+        $query = $this->db->where($params)->select('id,user_name')->get(self::TABLE_NAME);
         return $query->result_array();
     }
     
