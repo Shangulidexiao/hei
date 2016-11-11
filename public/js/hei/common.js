@@ -12,7 +12,9 @@ $(function(){
         }
     });
     $(document).on('change','.select-one',function(){
-        $selectAll                  = $('.select-all');
+        $this                       = $(this);
+        $selectAllName              = $this.attr('for-name');
+        $selectAll                  = $(".select-all[all-name='"+$selectAllName+"']");
         $checkedInputsNum           = $(".select-one:checked").length;
         $allInputsNum               = $(".select-one").length;
         if($checkedInputsNum === $allInputsNum){
