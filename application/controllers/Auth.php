@@ -19,26 +19,26 @@ class Auth extends MY_Controller {
     }
    
     public function listData(){
-        $page['start'] = $this->input->get_post('start');
-        $page['limit'] = $this->input->get_post('limit');
-        $params['page'] = $page;
-        $params['name'] = $this->input->get_post('name');
-        $params['parent_id'] = $this->input->get_post('parent_id');
-        $params['status'] = $this->input->get_post('status');
-        $authList = $this->auth->getList($params);
+        $page['start']          = $this->input->get_post('start');
+        $page['limit']          = $this->input->get_post('limit');
+        $params['page']         = $page;
+        $params['name']         = $this->input->get_post('name');
+        $params['parent_id']    = $this->input->get_post('parent_id');
+        $params['status']       = $this->input->get_post('status');
+        $authList               = $this->auth->getList($params);
         die(json_encode($authList));
     }
 
     public function update(){
-        $update['id']  = $this->input->post('id');
-        $update['parent_id']  = $this->input->post('parent_id');
-        $update['order_by']   = $this->input->post('order_by');
-        $update['url']        = $this->input->post('url');
-        $update['name']       = $this->input->post('name');
-        $update['icon']       = $this->input->post('icon');
-        $update['status']     = $this->input->post('status');
-        $update['is_show']     = $this->input->post('is_show');
-        $row = $this->auth->update($update);
+        $update['id']           = $this->input->post('id');
+        $update['parent_id']    = $this->input->post('parent_id');
+        $update['order_by']     = $this->input->post('order_by');
+        $update['url']          = $this->input->post('url');
+        $update['name']         = $this->input->post('name');
+        $update['icon']         = $this->input->post('icon');
+        $update['status']       = $this->input->post('status');
+        $update['is_show']      = $this->input->post('is_show');
+        $row                    = $this->auth->update($update);
         if($row){
             ajaxJson('更新成功！');
         }else{
@@ -53,7 +53,7 @@ class Auth extends MY_Controller {
         $add['name']          = $this->input->post('name');
         $add['icon']          = $this->input->post('icon');
         $add['status']        = $this->input->post('status');
-        $newId = $this->auth->add($add);
+        $newId                = $this->auth->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
         }else{
@@ -62,9 +62,9 @@ class Auth extends MY_Controller {
     }
 
     public function remove(){
-        $ids = $this->input->post('ids');
-        $idArr = explode(',', $ids);
-        $delRows = $this->auth->del(array('idArr'=>$idArr));
+        $ids        = $this->input->post('ids');
+        $idArr      = explode(',', $ids);
+        $delRows    = $this->auth->del(array('idArr'=>$idArr));
         if($delRows){
             ajaxJson('删除成功！最新id为'.$newId);
         }else{

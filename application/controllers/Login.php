@@ -18,13 +18,13 @@ class Login extends CI_Controller {
             $this->load->library('encryption');
             $this->load->model('AdminModel','admin');
             $this->load->helper('site');
-            $userName = $this->input->post('userName');
-            $password = $this->input->post('password');
+            $userName           = $this->input->post('userName');
+            $password           = $this->input->post('password');
 
             $admin['user_name'] = $userName;
-            $admin['password'] = password($password);
-            $admin['last_ip'] = $this->input->ip_address();
-            $insertId = $this->admin->add($admin);
+            $admin['password']  = password($password);
+            $admin['last_ip']   = $this->input->ip_address();
+            $insertId           = $this->admin->add($admin);
             if($insertId){
                 echo 'add success';
             }else{
@@ -36,8 +36,8 @@ class Login extends CI_Controller {
             $this->load->model('AdminModel','admin');
             $this->load->helper('site');
             $adminUdate['password'] = password('madison');
-            $adminUdate['id'] = 6;
-            $isSuccess = $this->admin->update($adminUdate);
+            $adminUdate['id']       = 6;
+            $isSuccess              = $this->admin->update($adminUdate);
             if($isSuccess){
                 echo " password update success";
             }else{
@@ -83,7 +83,7 @@ class Login extends CI_Controller {
                 $error = $this->form_validation->error('captcha') AND ajaxJson($error,300);
             }else{
                 $this->load->library('session');
-                $sessionCaptcha = $this->session->captcha;
+                $sessionCaptcha         = $this->session->captcha;
                 if(strtolower($captcha) !== strtolower($sessionCaptcha)){
                     ajaxJson('登录失败,验证码不正确',300);
                 }

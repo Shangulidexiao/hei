@@ -30,7 +30,7 @@ class Admin extends MY_Controller {
     }
 
     public function update(){
-        $adminInfo['admin_id']   = $this->input->post('id');
+        $adminInfo['admin_id']          = $this->input->post('id');
         $adminInfo['true_name']         = $this->input->post('true_name');
         $adminInfo['mobile']            = $this->input->post('mobile');
         $adminInfo['email']             = $this->input->post('email');
@@ -65,7 +65,7 @@ class Admin extends MY_Controller {
     }
 
     public function add(){
-        $adminInfo['admin_id'] = $this->adminAdd();
+        $adminInfo['admin_id']              = $this->adminAdd();
         if($adminInfo['admin_id']){
             $adminInfo['true_name']         = $this->input->post('true_name');
             $adminInfo['mobile']            = $this->input->post('mobile');
@@ -100,9 +100,9 @@ class Admin extends MY_Controller {
     }
     
     public function remove(){
-        $ids = $this->input->post('ids');
-        $idArr = explode(',', $ids);
-        $delRows = $this->adminInfo->del(array('idArr'=>$idArr));
+        $ids        = $this->input->post('ids');
+        $idArr      = explode(',', $ids);
+        $delRows    = $this->adminInfo->del(array('idArr'=>$idArr));
         if($delRows){
             ajaxJson('删除成功！最新id为'.$newId);
         }else{

@@ -21,13 +21,13 @@ class Group extends MY_Controller {
     }
    
     public function listData(){
-        $page['start'] = $this->input->get_post('start');
-        $page['limit'] = $this->input->get_post('limit');
-        $params['page'] = $page;
-        $params['name'] = $this->input->get_post('name');
-        $params['parent_id'] = $this->input->get_post('parent_id');
-        $params['status'] = $this->input->get_post('status');
-        $roleList = $this->group->getList($params);
+        $page['start']          = $this->input->get_post('start');
+        $page['limit']          = $this->input->get_post('limit');
+        $params['page']         = $page;
+        $params['name']         = $this->input->get_post('name');
+        $params['parent_id']    = $this->input->get_post('parent_id');
+        $params['status']       = $this->input->get_post('status');
+        $roleList               = $this->group->getList($params);
         die(json_encode($roleList));
     }
 
@@ -36,7 +36,7 @@ class Group extends MY_Controller {
         $update['order_by']   = $this->input->post('order_by');
         $update['name']       = $this->input->post('name');
         $update['status']     = $this->input->post('status');
-        $row = $this->group->update($update);
+        $row                  = $this->group->update($update);
         if($row){
             ajaxJson('更新成功！');
         }else{
@@ -45,11 +45,11 @@ class Group extends MY_Controller {
     }
 
     public function add(){
-        $add['parent_id']            = $this->input->post('parent_id');
+        $add['parent_id']     = $this->input->post('parent_id');
         $add['order_by']      = $this->input->post('order_by');
         $add['name']          = $this->input->post('name');
         $add['status']        = $this->input->post('status');
-        $newId = $this->group->add($add);
+        $newId                = $this->group->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
         }else{
@@ -58,9 +58,9 @@ class Group extends MY_Controller {
     }
 
     public function remove(){
-        $ids = $this->input->post('ids');
-        $idArr = explode(',', $ids);
-        $delRows = $this->group->del(array('idArr'=>$idArr));
+        $ids        = $this->input->post('ids');
+        $idArr      = explode(',', $ids);
+        $delRows    = $this->group->del(array('idArr'=>$idArr));
         if($delRows){
             ajaxJson('删除成功！最新id为'.$newId);
         }else{
