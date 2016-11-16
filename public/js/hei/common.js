@@ -1,4 +1,5 @@
 $(function(){
+    /*全选|全不选*/
     $(document).on('change','.select-all',function(){
         $this 			= $(this);
         $isChecked 		= $this.attr('checked');
@@ -11,6 +12,7 @@ $(function(){
                 $selectInputs.removeAttr('checked');
         }
     });
+    /*选择一个*/
     $(document).on('change','.select-one',function(){
         $this                       = $(this);
         $selectAllName              = $this.attr('for-name');
@@ -24,3 +26,16 @@ $(function(){
         }
     }); 
 });
+
+    
+/*复选框*/
+function checkBoxArr(selector){
+    var checkBoxValues   = [];
+     $(selector).each(function(){
+         $_this = $(this);
+         if($_this.is(':checked')){
+             checkBoxValues.push($_this.val());
+         }
+     });
+     return checkBoxValues;
+}

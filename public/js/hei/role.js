@@ -101,7 +101,15 @@ var Store = Data.Store,
                     text:'确定添加',
                     elCls : 'button button-primary',
                     handler : function(){
-                      alert(0);
+                        var adminList = checkBoxArr("input[name='admin[]']");
+                        var postObj   = {admin:adminList,roleId:roleId};
+                        $.post('/Role/addAdmin',postObj,function(response){
+                            if(response.code === 200){
+                                alert('成功'+response.code === 200);
+                            }else{
+                                alert('失败');
+                            }
+                        },'json');
                       this.close();
                     }
                   },{

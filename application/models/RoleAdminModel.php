@@ -20,5 +20,22 @@ class RoleAdminModel extends MY_Model {
         $query = $this->db->where($params)->select('admin_id')->get(self::TABLE_NAME);
         return $query->result_array();
     }
+    
+    public function addAdminList(ARRAY $params=array()){
+        if(empty($params)){
+            return false;
+        }
+        $this->db->insert_batch(self::TABLE_NAME,$params);
+        return $this->db->affected_rows();
+    }
+    
+    public function delAdmin(ARRAY $params=array()){
+        if(!isset($params['role_id'])){
+            return;
+        }
+        $this->db->where(array('role_id'=>$params['role_id']))
+                 ->update(self::TABLE_NAME,array('is_del'=>1));
+        return $this->db->affected_rows();
+    }
 }
 

@@ -13,11 +13,16 @@ class Role extends MY_Controller {
         $this->load->model('RoleModel','role');
         $this->load->helpers('json');
     }
-    
+    /**
+     * 角色列表
+     */
     public function index(){
         $this->load->view('role/index');
     }
    
+    /**
+     * 角色列表的数据
+     */
     public function listData(){
         $page['start']          = $this->input->get_post('start');
         $page['limit']          = $this->input->get_post('limit');
@@ -29,6 +34,9 @@ class Role extends MY_Controller {
         die(json_encode($roleList));
     }
 
+    /**
+     * 更新角色
+     */
     public function update(){
         $update['id']         = $this->input->post('id');
         $update['order_by']   = $this->input->post('order_by');
@@ -42,6 +50,9 @@ class Role extends MY_Controller {
         }
     }
 
+    /**
+     * 添加角色
+     */
     public function add(){
         $add['order_by']      = $this->input->post('order_by');
         $add['name']          = $this->input->post('name');
@@ -54,6 +65,9 @@ class Role extends MY_Controller {
         }
     }
 
+    /**
+     * 删除角色
+     */
     public function remove(){
         $ids        = $this->input->post('ids');
         $idArr      = explode(',', $ids);
@@ -65,6 +79,9 @@ class Role extends MY_Controller {
         }
     }
     
+    /**
+     * 角色添加人员的列表
+     */
     public function adminList(){
         
         $roleParams['role_id'] = $this->input->get('roleId');#角色id
@@ -78,6 +95,24 @@ class Role extends MY_Controller {
     }
     
     public function addAdmin(){
+        $adminList = $this->input->post('admin');
+        $roleId = $this->input->post('roleId');
+        if(empty($adminList)){
+            ajaxJson('请选择你要添加的人员',300);
+        }
+        $this->load->model('RoleAdminModel','roleAdmin');
+        $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
+        $adminArr = array();
+        foreach ($adminList as $adminKey => $admin){
+            $adminArr[$adminKey]['role_id']     = $roleId;
+            $adminArr[$adminKey]['admin_id']    = $admin;
+        }
         
+        $success = $this->roleAdmin->addAdminList($adminArr);
+        if($success > 0){
+            ajaxJson('添加成功');
+        }else{
+            ajaxJson('添加失败',300);
+        }
     }
 }
