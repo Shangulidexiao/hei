@@ -89,7 +89,9 @@ class Role extends MY_Controller {
         $this->load->model('RoleAdminModel','roleAdmin');
         
         $roleAdmin['admins']        = $this->admin->getList();#所有管理员的列表
+        $roleAdmin['roleAdmins']    = array();
         $roleAdmins                 = $this->roleAdmin->getList($roleParams);#此角色下的管理员
+        var_dump($roleAdmins);
         foreach ($roleAdmins as $adminOne) {
             $roleAdmin['roleAdmins'][] = $adminOne['admin_id'];
         }
@@ -102,7 +104,8 @@ class Role extends MY_Controller {
         $adminList = $this->input->post('admin');
         $roleId = $this->input->post('roleId');
         if(empty($adminList)){
-            ajaxJson('请选择你要添加的人员',300);
+            $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
+            ajaxJson('已删除该角色的所有人员',300);
         }
         $this->load->model('RoleAdminModel','roleAdmin');
         $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
