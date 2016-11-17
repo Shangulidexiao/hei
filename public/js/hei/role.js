@@ -104,10 +104,10 @@ var Store = Data.Store,
                         var adminList = checkBoxArr("input[name='admin[]']");
                         var postObj   = {admin:adminList,roleId:roleId};
                         $.post('/Role/addAdmin',postObj,function(response){
-                            if(response.code === 200){
-                                alert('成功'+response.code === 200);
+                            if(response.code===200){
+                                BUI.Message.Alert(response.msg,'success');
                             }else{
-                                alert('失败');
+                                BUI.Message.Alert(response.msg,'error');
                             }
                         },'json');
                       this.close();

@@ -17,6 +17,10 @@ class RoleAdminModel extends MY_Model {
     
 
     public function getList(ARRAY $params=array()){
+        
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
+        }
         $query = $this->db->where($params)->select('admin_id')->get(self::TABLE_NAME);
         return $query->result_array();
     }

@@ -88,9 +88,13 @@ class Role extends MY_Controller {
         
         $this->load->model('RoleAdminModel','roleAdmin');
         
-        $roleAdmin['admins'] = $this->admin->getList();#所有管理员的列表
-        $roleAdmin['roleAdmins'] = $this->roleAdmin->getList($roleParams);#此角色下的管理员
-        
+        $roleAdmin['admins']        = $this->admin->getList();#所有管理员的列表
+        $roleAdmins                 = $this->roleAdmin->getList($roleParams);#此角色下的管理员
+        foreach ($roleAdmins as $adminOne) {
+            $roleAdmin['roleAdmins'][] = $adminOne['admin_id'];
+        }
+        $isAllSelect = count($roleAdmin['admins']) === count($roleAdmin['roleAdmins']);
+        $roleAdmin['isAllSelect'] = $isAllSelect;
         $this->load->view('role/adminList',$roleAdmin);
     }
     
