@@ -125,13 +125,16 @@ class Role extends MY_Controller {
      * 该角色的权限信息
      */
     public function authTree(){
-        
+        $this->load->model('AuthModel','auth');
+        $authAll = $this->auth->getAll();
+        var_dump($authAll);
+        $roleParams['role_id']      = $this->input->get('roleId');#角色id
     }
     
     /**
      *  为角色添加权限
      */
-    public function addRole(){
+    public function addAuth(){
         
     }
 }

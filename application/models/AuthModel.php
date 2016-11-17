@@ -103,6 +103,12 @@ class AuthModel extends MY_Model {
         return $this->db->count_all_results(self::TABLE_NAME);
     }
     
-
+    public function getAll(ARRAY $params=array()){
+//        if(!isset($params['is_del'])){
+//            $params['is_del'] = 0;
+//        }
+        $query = $this->db->where($params)->select('id,name')->get(self::TABLE_NAME);
+        return $query->result_array();
+    }
 }
 

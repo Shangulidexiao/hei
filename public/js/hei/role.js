@@ -147,8 +147,59 @@ var Store = Data.Store,
           }
  
           if(target.hasClass('btn-add-auth')){
-            alert('添加权限');
-            console.log(record);
+            var dialog = new Overlay.Dialog({
+                title:'添加权限',
+                width:1000,
+                height:400,
+                mask:true,
+                buttons:[
+                  {
+                    text:'确定添加',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                        var adminList = checkBoxArr("input[name='admin[]']");
+                        var postObj   = {admin:adminList,roleId:roleId};
+                        $.post('/Role/addAuth',postObj,function(response){
+                            if(response.code===200){
+                                BUI.Message.Alert(response.msg,'success');
+                            }else{
+                                BUI.Message.Alert(response.msg,'error');
+                            }
+                        },'json');
+                      this.close();
+                    }
+                  },{
+                    text:'关闭',
+                    elCls : 'button',
+                    handler : function(){
+                      this.close();
+                    }
+                  }
+                ], loader : {
+                    url : '/role/authTree',
+                    autoLoad : true, //不自动加载
+                    params : {roleId :roleId},//附加的参数
+                    lazyLoad : false //不延迟加载
+                    
+                    /*, //以下是默认选项
+                    dataType : 'text',   //加载的数据类型
+                    property : 'bodyContent', //将加载的内容设置到对应的属性
+                    loadMask : {
+                      //el , dialog 的body
+                    },
+                    lazyLoad : {
+                      event : 'show', //显示的时候触发加载
+                      repeat : true //是否重复加载
+                    },
+                    callback : function(text){
+                      var loader = this,
+                        target = loader.get('target'); //使用Loader的控件，此处是dialog
+                      //
+                    }
+                    */
+                  }
+              });
+               dialog.show();
           }
  
         });
