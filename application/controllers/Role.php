@@ -83,43 +83,55 @@ class Role extends MY_Controller {
      * 角色添加人员的列表
      */
     public function adminList(){
-        
-        $roleParams['role_id'] = $this->input->get('roleId');#角色id
-        
         $this->load->model('RoleAdminModel','roleAdmin');
-        
+        $roleParams['role_id']      = $this->input->get('roleId');#角色id
         $roleAdmin['admins']        = $this->admin->getList();#所有管理员的列表
         $roleAdmin['roleAdmins']    = array();
         $roleAdmins                 = $this->roleAdmin->getList($roleParams);#此角色下的管理员
-        var_dump($roleAdmins);
         foreach ($roleAdmins as $adminOne) {
             $roleAdmin['roleAdmins'][] = $adminOne['admin_id'];
         }
         $isAllSelect = count($roleAdmin['admins']) === count($roleAdmin['roleAdmins']);
-        $roleAdmin['isAllSelect'] = $isAllSelect;
+        $roleAdmin['isAllSelect']   = $isAllSelect;
         $this->load->view('role/adminList',$roleAdmin);
     }
     
+    /**
+     * 为角色添加人员
+     */
     public function addAdmin(){
-        $adminList = $this->input->post('admin');
-        $roleId = $this->input->post('roleId');
+        $this->load->model('RoleAdminModel','roleAdmin');
+        $adminList  = $this->input->post('admin');
+        $roleId     = $this->input->post('roleId');
         if(empty($adminList)){
             $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
             ajaxJson('已删除该角色的所有人员',300);
         }
-        $this->load->model('RoleAdminModel','roleAdmin');
         $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
         $adminArr = array();
         foreach ($adminList as $adminKey => $admin){
             $adminArr[$adminKey]['role_id']     = $roleId;
             $adminArr[$adminKey]['admin_id']    = $admin;
         }
-        
         $success = $this->roleAdmin->addAdminList($adminArr);
         if($success > 0){
-            ajaxJson('添加成功');
+            ajaxJson('为该角色添加人员成功');
         }else{
-            ajaxJson('添加失败',300);
+            ajaxJson('为该角色添加人员',300);
         }
+    }
+    
+    /**
+     * 该角色的权限信息
+     */
+    public function authTree(){
+        
+    }
+    
+    /**
+     *  为角色添加权限
+     */
+    public function addRole(){
+        
     }
 }
