@@ -126,8 +126,10 @@ class Role extends MY_Controller {
      */
     public function authTree(){
         $this->load->model('AuthModel','auth');
+        $this->load->helpers('bui');
         $authAll = $this->auth->getAll();
-        var_dump($authAll);
+        $tree = createBUITree($authAll);
+        
         $roleParams['role_id']      = $this->input->get('roleId');#角色id
     }
     
