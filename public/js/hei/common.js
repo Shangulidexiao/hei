@@ -34,7 +34,9 @@ function checkBoxArr(selector){
      $(selector).each(function(){
          $_this = $(this);
          if($_this.is(':checked')){
-             checkBoxValues.push($_this.val());
+             if(checkBoxValues.indexOf($_this.val())===-1){
+                  checkBoxValues.push($_this.val());
+             }
          }
      });
      return checkBoxValues;

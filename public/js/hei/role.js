@@ -4,10 +4,8 @@
  * @author Han Jian <18335831710@163.com>
  * @date 2016-11-6 0:47:12 
  */
-
-
 BUI.use('common/page'); //页面链接跳转
-BUI.use(['bui/grid','bui/data','bui/overlay'],function (Grid,Data,Overlay) {
+BUI.use(['bui/grid','bui/data','bui/overlay','bui/tree'],function (Grid,Data,Overlay,Tree) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
     columns = [
@@ -203,6 +201,9 @@ var Store = Data.Store,
           }
  
         });
+        
+
+        
   function validFn (value,obj) {
     var records = store.getResult(),
       rst = '';
