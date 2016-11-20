@@ -17,7 +17,6 @@ class RoleAdminModel extends MY_Model {
     
 
     public function getList(ARRAY $params=array()){
-        
         if(!isset($params['is_del'])){
             $params['is_del'] = 0;
         }
@@ -25,6 +24,18 @@ class RoleAdminModel extends MY_Model {
         return $query->result_array();
     }
     
+    public function getRoleIds(ARRAY $params=array()){
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
+        }
+        $query = $this->db->where($params)->select('role_id')->get(self::TABLE_NAME);
+        $result = $query->result_array();
+        $return = array();
+        foreach ($result as $key => $value) {
+            $return[]=$value['role_id'];
+        }
+        return $return;
+    }
     public function addAdminList(ARRAY $params=array()){
         if(empty($params)){
             return false;

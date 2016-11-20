@@ -17,7 +17,6 @@ class RoleAuthModel extends MY_Model {
     
 
     public function getAllByRoleId(ARRAY $params=array()){
-        
         if(!isset($params['is_del'])){
             $params['is_del'] = 0;
         }
@@ -25,6 +24,20 @@ class RoleAuthModel extends MY_Model {
         return $query->result_array();
     }
     
+    public function getAuths(ARRAY $params=array()){
+        if(!isset($params['roleIds'])){
+            return array();
+        }
+        $query = $this->db->where_in('role_id',$params['roleIds'])->select('auth_id')->get(self::TABLE_NAME);
+        $result = $query->result_array();
+        $return = array();
+        foreach ($result as $key => $value) {
+            if(!isset($return[$value['auth_id']])){
+                $return[$value['auth_id']] = $value['auth_id'];
+            }
+        }
+        return $return;
+    }
     public function addAuthList(ARRAY $params=array()){
         if(empty($params)){
             return false;

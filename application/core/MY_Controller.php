@@ -17,6 +17,9 @@ class MY_Controller extends CI_Controller {
         #初始化操作
         $this->load->helper('url');
         $this->load->model('AdminModel','admin');
+        $this->load->model('MenuModel','menu');
+        $this->load->model('RoleAdminModel','roleAdmin');
+        $this->load->model('RoleAuthModel','roleAuth');
         
         #判断登录和初始化用户信息
         $isLogin = $this->isLogin();
@@ -36,7 +39,6 @@ class MY_Controller extends CI_Controller {
         $uid = $this->input->cookie('uid');
         $ukey = $this->input->cookie('ukey');
         $pkey = $this->input->cookie('pkey');
-        
         $adminKey = md5(PKEY . $ukey . $uid);
         if($pkey !== $adminKey){
             return FALSE;
@@ -46,10 +48,9 @@ class MY_Controller extends CI_Controller {
     }
     
     public function menu(){
-        $this->load->model('MenuModel','menu');
-        $menu = $menuAll = $this->menu->getMenuAll();
-        $menuFirst = array();
-        $menuSecond = array();
+        $menu = $menuAll = $this->getAuths();
+        $menuFirst = $menuSecond  =  array();
+        
         #生成顶级菜单
         foreach ($menu as $k1 => $v1) {
             if($v1['parent_id'] === '0' && $v1['is_show']==='1'){
@@ -99,6 +100,18 @@ class MY_Controller extends CI_Controller {
         $this->load->vars(array('menuFirst'=>$menuFirst));
         $this->load->vars(array('menuJson'=>json_encode($menuArr)));
     }
+    
+    /**
+     *  得到用户的所有权限 （现在只去了角色的权限|还有用户的权限没有取呢）
+     * @return array
+     */
+    protected function getAuths(){
+        $roleIds = $this->roleAdmin->getRoleIds(array('admin_id'=>$this->userInfo['id']));
+        $authIds = $this->roleAuth->getAuths(array('roleIds'=>$roleIds));
+        return $this->menu->getMenuAll(array('authIds'=>$authIds));
+    }
+            
+
     /**
      * 判断是否有权限
      */
@@ -106,12 +119,12 @@ class MY_Controller extends CI_Controller {
         $class      = $this->router->fetch_class();
         $method     = $this->router->fetch_method();
         $auth       = strtolower('/'.$class.'/'.$method);
-        $authArrs = $this->menu->getMenuAll();
+        $authArrs = $this->getAuths();
         foreach ($authArrs as $authArr){
             $this->authUrl[] = strtolower($authArr['url']);
         }
         $noAuth = array('/index/logout');#不需要权限认证
-        if(!in_array($auth, $this->authUrl)){
+        if(is_array($this->authUrl) && !in_array($auth, $this->authUrl)){
             if(in_array($auth, $noAuth)){
                 return;
             }
