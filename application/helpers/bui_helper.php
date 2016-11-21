@@ -18,9 +18,12 @@ if ( ! function_exists('createBUITree'))
         
         $menuFirst      = array();
         $selectIds        = array();
-        foreach ($selected as $value) {
-            $selectIds[] = $value['id'];
+        if(!empty($selected)){
+            foreach ($selected as $value) {
+                $selectIds[] = $value['auth_id'];
+            }
         }
+        
         #生成顶级菜单
         foreach ($params as $k1 => $v1) {
             if($v1['parent_id'] === '0'){

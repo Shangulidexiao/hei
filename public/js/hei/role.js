@@ -94,6 +94,7 @@ var Store = Data.Store,
                 width:1000,
                 height:400,
                 mask:true,
+                closeAction:'remove',//关闭弹出框时从dom中移除
                 buttons:[
                   {
                     text:'确定添加',
@@ -146,10 +147,12 @@ var Store = Data.Store,
  
           if(target.hasClass('btn-add-auth')){
             var dialog = new Overlay.Dialog({
+                y:50,
                 title:'添加权限',
                 width:1000,
-                height:400,
+                height:'auto',
                 mask:true,
+                closeAction:'remove',//关闭弹出框时从dom中移除
                 buttons:[
                   {
                     text:'确定添加',

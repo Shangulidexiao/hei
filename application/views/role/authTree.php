@@ -3,7 +3,7 @@
     <label class="control-label"><s>*</s>权限列表：</label>
     <br>
         <div class="row">
-            <div id="authTree" style="overflow: auto;">
+            <div id="authTree">
                  
             </div>
         </div>
@@ -11,7 +11,7 @@
     </div>      
 </form>
 <script>
-BUI.use(['bui/tree','bui/data'],function(Tree,Data){
+ BUI.use(['bui/tree','bui/data'],function(Tree,Data){
          /*权限树生成*/
         var treeStore = new Data.TreeStore({
             root :{
@@ -23,8 +23,7 @@ BUI.use(['bui/tree','bui/data'],function(Tree,Data){
           tree = new Tree.TreeList({
             render : '#authTree',
             store : treeStore,
-            dirSelectable:true,
-            showRoot : true //可以不配置，则不显示根节点
+            checkType: 'all'
           });
         tree.render();
         treeStore.load({id : '0'});//加载根节点，也可以让用户点击加载
