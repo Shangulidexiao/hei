@@ -369,7 +369,7 @@
                                 cookie.remove('username');
                             }
                             // 登录成功
-                            window.location = '/Index/index';
+                            top.location = '/Index/index';
                             //BUI.Message.Alert( data.msg, 'success' );
                         } else {
                             // 登录失败提示 - 改变提示样式

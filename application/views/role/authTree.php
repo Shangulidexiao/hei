@@ -11,6 +11,7 @@
     </div>      
 </form>
 <script>
+    
  BUI.use(['bui/tree','bui/data'],function(Tree,Data){
          /*权限树生成*/
         var treeStore = new Data.TreeStore({
@@ -23,9 +24,11 @@
           tree = new Tree.TreeList({
             render : '#authTree',
             store : treeStore,
-            checkType: 'all'
+            checkType: 'all',
+            showLine : true //显示连接线
           });
         tree.render();
+        window.authTree = tree;
         treeStore.load({id : '0'});//加载根节点，也可以让用户点击加载
  });
 </script>

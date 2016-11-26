@@ -15,7 +15,7 @@ if ( ! function_exists('createBUITree'))
         if(empty($params)){
             return array();
         }
-        
+        createTree('0',$params,$selected);
         $menuFirst      = array();
         $selectIds        = array();
         if(!empty($selected)){
@@ -61,9 +61,6 @@ if ( ! function_exists('getSonTree'))
      * @return boolean
      */
     function getSonTree($pid,ARRAY $params=array(),ARRAY $selected=array()){
-        if(empty($pid)){
-            return false;
-        }
          $tree = array();
         foreach ($params as $key => $value) {
             if(in_array($value['id'], $selected)){
@@ -75,7 +72,19 @@ if ( ! function_exists('getSonTree'))
                 $tree[$value['id']] = $value;
             }
         }
-        
         return $tree;
+    }
+}
+
+if(!function_exists('createTree')){
+    function createTree($parentId='0',ARRAY $params=array(),ARRAY $selected=array()){
+        
+        $root['children'] = getSonTree($parentId,$params,$selected);
+        if(empty($tree)){
+            return $tree;
+        }
+        foreach ($tree as $tk => $tv) {
+            createTree($tv['id'],$params,$selected);
+        }
     }
 }

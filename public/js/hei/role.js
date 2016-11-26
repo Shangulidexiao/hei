@@ -92,7 +92,7 @@ var Store = Data.Store,
               var dialog = new Overlay.Dialog({
                 title:'添加用户',
                 width:1000,
-                height:400,
+                height:400, 
                 mask:true,
                 closeAction:'remove',//关闭弹出框时从dom中移除
                 buttons:[
@@ -147,19 +147,28 @@ var Store = Data.Store,
  
           if(target.hasClass('btn-add-auth')){
             var dialog = new Overlay.Dialog({
-                y:50,
                 title:'添加权限',
                 width:1000,
-                height:'auto',
+                height:'auto', 
                 mask:true,
+                align :{
+                node: null,     // 参考元素, falsy 或 window 为可视区域, 'trigger' 为触发元素, 其他为指定元素
+                points: ['tr', 'tl'] , // ['tr', 'tl'] 表示 overlay 的 tl 与参考节点的 tr 对齐
+                offset: [0, 0]    // 有效值为 [n, m]
+                },
                 closeAction:'remove',//关闭弹出框时从dom中移除
                 buttons:[
                   {
                     text:'确定添加',
                     elCls : 'button button-primary',
                     handler : function(){
+                        var checkedNodes = window.authTree.getCheckedNodes();
+                        var authArr = [];
+                        BUI.each(checkedNodes,function(node){
+                          authArr.push(node.id);
+                        });
                         var adminList = checkBoxArr("input[name='admin[]']");
-                        var postObj   = {admin:adminList,roleId:roleId};
+                        var postObj   = {auths:authArr,roleId:roleId};
                         $.post('/Role/addAuth',postObj,function(response){
                             if(response.code===200){
                                 BUI.Message.Alert(response.msg,'success');

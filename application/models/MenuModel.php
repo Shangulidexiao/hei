@@ -14,7 +14,7 @@ class MenuModel extends MY_Model {
     }
     
     public function getMenuAll(ARRAY $params = array()){
-        if(!isset($params['authIds'])){
+        if(!isset($params['authIds']) || empty($params['authIds'])){
             return array();
         }
         $query = $this->db->where_in('id',$params['authIds'])->get(self::TABLE_NAME)->result_array();

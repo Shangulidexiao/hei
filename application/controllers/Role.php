@@ -156,6 +156,29 @@ class Role extends MY_Controller {
      *  为角色添加权限
      */
     public function addAuth(){
+        $authList = $this->input->post('auths');
+        $roleId     = $this->input->post('roleId');
         
+        $this->load->model('RoleAuthModel','roleAuth');
+         if(empty($authList)){
+            $this->roleAuth->delAuth(array('role_id'=>$roleId));#删除这个角色下的所有用户
+            ajaxJson('已删除该角色的所有人员',300);
+        }
+        $this->roleAuth->delAuth(array('role_id'=>$roleId));#先删除这个角色下的所有用户
+        $adminArr = array();
+        foreach ($authList as $authKey => $auth){
+            $adminArr[$authKey]['role_id']             = $roleId;
+            $adminArr[$authKey]['auth_id']            = $auth;
+            $adminArr[$authKey]['create_time']      = time();
+            $adminArr[$authKey]['update_time']      = time();
+            $adminArr[$authKey]['create_id']        = $this->userInfo['id'];
+            $adminArr[$authKey]['update_id']      = $this->userInfo['id'];
+        }
+        $success = $this->roleAuth->addAuthList($adminArr);
+        if($success > 0){
+            ajaxJson('为该角色添加权限成功');
+        }else{
+            ajaxJson('为该角色添加权限失败',300);
+        }
     }
 }

@@ -6,12 +6,12 @@ class Login extends CI_Controller {
 	/**
          * 登录类
 	 */
-	public function index()
-	{
+        public function index()
+        {
             $login['captcha'] =$this->captcha();
             $this->load->helper(array('form','url','site'));
             $this->load->view('login/login',$login);
-	}
+        }
         
         
         public function doAdd(){
