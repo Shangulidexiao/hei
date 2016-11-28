@@ -9,82 +9,65 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-if ( ! function_exists('createBUITree'))
-{
+if(!function_exists('createBUITree')){
     function createBUITree(ARRAY $params=array(),ARRAY $selected=array()){
-        if(empty($params)){
-            return array();
-        }
-        createTree('0',$params,$selected);
-        $menuFirst      = array();
         $selectIds        = array();
         if(!empty($selected)){
             foreach ($selected as $value) {
                 $selectIds[] = $value['auth_id'];
             }
         }
-        
-        #生成顶级菜单
-        foreach ($params as $k1 => $v1) {
-            if($v1['parent_id'] === '0'){
-                $v1['text']     = $v1['name'];
-                if(in_array($v1['id'], $selectIds)){
-                    $v1['checked']     = true;
+        $root = getPSon(0,$params,$selectIds);
+        $tree = array();
+        foreach ($root[0] as $key => $value) {
+            if(isset($root[$value['id']])){
+                 $children = makeTree($value['id'],$root);
+                if(!empty($children)){
+                    $value['children'] = $children;
                 }
-                unset($params[$k1],$v1['name'],$v1['parent_id']);
-                $menuFirst[$v1['id']]       = $v1;
-            }
-        }
-        $menuArr = $menuFirst;
-        #生成二级菜单
-        foreach ($menuFirst as $k2 => $v2) {
-            $son                                    = getSonTree($v2['id'], $params, $selectIds);
-            foreach ($son as $v3) {
-                $subSon                           = getSonTree($v3['id'], $params, $selectIds);
-                $son[$v3['id']]['children'] = array_values($subSon);
-            }
-            $menuArr[$k2]['children']      = array_values($son);
-        }
-        
-       return array_values($menuArr);
-    }
-}
-
-
-if ( ! function_exists('getSonTree'))
-{
-      /**
-     *  得到子树
-     * @param type $pid 父id
-     * @param array $params 所有所有枝叶
-     * @param array $selected 被选择的枝叶
-     * @return boolean
-     */
-    function getSonTree($pid,ARRAY $params=array(),ARRAY $selected=array()){
-         $tree = array();
-        foreach ($params as $key => $value) {
-            if(in_array($value['id'], $selected)){
-                    $value['checked']     = true;
-                }
-            if($pid === $value['parent_id']){
-                $value['text']      = $value['name'];
-                unset($value['parent_id'],$value['name']);
-                $tree[$value['id']] = $value;
+                $tree[] = $value;
             }
         }
         return $tree;
     }
 }
 
-if(!function_exists('createTree')){
-    function createTree($parentId='0',ARRAY $params=array(),ARRAY $selected=array()){
+if(!function_exists('makeTree')){
+    function makeTree($parentId,$root){
+        $makeTree = array();
+        foreach ($root[$parentId] as $key => $value) {
+            if(isset($root[$value['id']])){
+                $children = makeTree($value['id'],$root);
+                if(!empty($children)){
+                   $value['children'] = $children;
+                }
+            }
+            $makeTree[] = $value;
+        }
+        return $makeTree;
+    }
+}
+
+
+/**
+ * 让子节点先找到自己的一级父节点
+ */
+if(!function_exists('getPSon')){
+    function getPSon($parentId='0',ARRAY $params=array(),ARRAY $selected=array()){
+        $tree = array();
+        foreach ($params as $key => $value) {
+            if(in_array($value['id'], $selected)){
+                    $value['checked']     = true;
+                }else{
+                    $value['checked']     = false;
+                }
+                $tree[$value['parent_id']][] = array(
+                    'id'=>$value['id'],
+                    'text'=>$value['name'],
+                    'checked'=>$value['checked'],
+                );
+        }
+        return $tree;
         
-        $root['children'] = getSonTree($parentId,$params,$selected);
-        if(empty($tree)){
-            return $tree;
-        }
-        foreach ($tree as $tk => $tv) {
-            createTree($tv['id'],$params,$selected);
-        }
     }
 }

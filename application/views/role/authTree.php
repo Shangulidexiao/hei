@@ -19,7 +19,7 @@
               id : '0',
               text : '权限树'
             },
-            url : '/role/treeData'
+            url : '/role/treeData?roleId='+window.authRoleId
           }),
           tree = new Tree.TreeList({
             render : '#authTree',

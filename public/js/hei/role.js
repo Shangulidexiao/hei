@@ -87,7 +87,7 @@ var Store = Data.Store,
             field = ev.field, //点击对应列的dataIndex
             target = $(ev.domTarget),
             roleId = record.id; //点击的元素
-            
+            window.authRoleId = roleId;
           if(target.hasClass('btn-add-user')){
               var dialog = new Overlay.Dialog({
                 title:'添加用户',
