@@ -110,4 +110,54 @@ class Admin extends MY_Controller {
         }
     }
    
+        
+    /**
+     * 该用户的权限信息
+     */
+    public function authTree(){
+        $this->load->view('admin/authTree');
+    }
+    /**
+     * 该用户的权限信息
+     */
+    public function treeData(){
+        $this->load->model('AuthModel','auth');
+        $this->load->model('AdminAuthModel','adminAuth');
+        $this->load->helpers('bui');
+        $roleParams['admin_id']      = $this->input->get('adminId');#用户id
+        $selectAuth                    = $this->adminAuth->getAllByAdminId($roleParams);
+        $authAll                         = $this->auth->getAll();
+        $tree                             = createBUITree($authAll,$selectAuth);
+        die(json_encode($tree));
+    }
+    
+    /**
+     *  为用户添加权限
+     */
+    public function addAuth(){
+        $authList = $this->input->post('auths');
+        $adminId    = $this->input->post('adminId');
+        
+        $this->load->model('AdminAuthModel','adminAuth');
+         if(empty($authList)){
+            $this->adminAuth->delAuth(array('admin_id'=>$adminId));#删除这个角色下的所有用户
+            ajaxJson('已删除该角色的所有人员',300);
+        }
+        $this->adminAuth->delAuth(array('admin_id'=>$adminId));#先删除这个角色下的所有用户
+        $adminArr = array();
+        foreach ($authList as $authKey => $auth){
+            $adminArr[$authKey]['admin_id']             = $adminId;
+            $adminArr[$authKey]['auth_id']            = $auth;
+            $adminArr[$authKey]['create_time']      = time();
+            $adminArr[$authKey]['update_time']      = time();
+            $adminArr[$authKey]['create_id']        = $this->userInfo['id'];
+            $adminArr[$authKey]['update_id']      = $this->userInfo['id'];
+        }
+        $success = $this->adminAuth->addAuthList($adminArr);
+        if($success > 0){
+            ajaxJson('为该用户添加权限成功');
+        }else{
+            ajaxJson('为该用户添加权限失败',300);
+        }
+    }
 }

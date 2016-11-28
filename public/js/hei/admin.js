@@ -6,7 +6,7 @@
  */
 
 BUI.use('common/page'); //页面链接跳转
-BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
+BUI.use(['bui/grid','bui/data','bui/overlay'],function (Grid,Data,Overlay) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
     columns = [
@@ -19,7 +19,8 @@ var Store = Data.Store,
         {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
         {title : '操作',width:200,renderer : function(){
-                return '<span class="grid-command btn-edit">编辑</span>';
+                return '<span class="grid-command btn-edit">编辑</span>\n\
+                            <span class="grid-command btn-add-auth">添加权限</span>';
         }}
       ],
     //默认的数据
@@ -85,7 +86,79 @@ var Store = Data.Store,
 
     });
   grid.render();
-
+  grid.on('cellclick',function  (ev) {
+          var record = ev.record, //点击行的记录
+            field = ev.field, //点击对应列的dataIndex
+            target = $(ev.domTarget),
+            adminId = record.id; //点击的元素
+            window.heiAdminId = adminId;
+          if(target.hasClass('btn-add-auth')){
+            var dialog = new Overlay.Dialog({
+                title:'添加权限',
+                width:1000,
+                height:'auto', 
+                mask:true,
+                align :{
+                node: null,     // 参考元素, falsy 或 window 为可视区域, 'trigger' 为触发元素, 其他为指定元素
+                points: ['tr', 'tl'] , // ['tr', 'tl'] 表示 overlay 的 tl 与参考节点的 tr 对齐
+                offset: [0, 0]    // 有效值为 [n, m]
+                },
+                closeAction:'remove',//关闭弹出框时从dom中移除
+                buttons:[
+                  {
+                    text:'确定添加',
+                    elCls : 'button button-primary',
+                    handler : function(){
+                        var checkedNodes = window.authTree.getCheckedNodes();
+                        var authArr = [];
+                        BUI.each(checkedNodes,function(node){
+                          authArr.push(node.id);
+                        });
+                        var postObj   = {auths:authArr,adminId:adminId};
+                        $.post('/Admin/addAuth',postObj,function(response){
+                            if(response.code===200){
+                                BUI.Message.Alert(response.msg,'success');
+                            }else{
+                                BUI.Message.Alert(response.msg,'error');
+                            }
+                        },'json');
+                      this.close();
+                    }
+                  },{
+                    text:'关闭',
+                    elCls : 'button',
+                    handler : function(){
+                      this.close();
+                    }
+                  }
+                ], loader : {
+                    url : '/Admin/authTree',
+                    autoLoad : true, //不自动加载
+                    params : {adminId :adminId},//附加的参数
+                    lazyLoad : false //不延迟加载
+                    
+                    /*, //以下是默认选项
+                    dataType : 'text',   //加载的数据类型
+                    property : 'bodyContent', //将加载的内容设置到对应的属性
+                    loadMask : {
+                      //el , dialog 的body
+                    },
+                    lazyLoad : {
+                      event : 'show', //显示的时候触发加载
+                      repeat : true //是否重复加载
+                    },
+                    callback : function(text){
+                      var loader = this,
+                        target = loader.get('target'); //使用Loader的控件，此处是dialog
+                      //
+                    }
+                    */
+                  }
+              });
+               dialog.show();
+          }
+ 
+        });
   function addFunction(){
     var newData = {user_name :'请输入用户名',true_name:'请输入真实姓名',order_by:0};
     editing.add(newData); //添加记录后，直接编辑

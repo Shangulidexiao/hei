@@ -167,7 +167,6 @@ var Store = Data.Store,
                         BUI.each(checkedNodes,function(node){
                           authArr.push(node.id);
                         });
-                        var adminList = checkBoxArr("input[name='admin[]']");
                         var postObj   = {auths:authArr,roleId:roleId};
                         $.post('/Role/addAuth',postObj,function(response){
                             if(response.code===200){
