@@ -43,23 +43,6 @@ class RoleModel extends MY_Model {
         return $this->db->affected_rows();
     }
     
-    /**
-     * 删除用户（慎用）
-     * @param array $params
-     * @return boolean
-     */
-    public function del(ARRAY $params=array()){
-        if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
-            $this->db->or_where_in('id',$params['idArr'])->delete(self::TABLE_NAME);
-            return $this->db->affected_rows();
-        }
-        if(empty($params) || empty($params['id'])){
-            return false;
-        }
-        $this->db->where($params)->delete(self::TABLE_NAME);
-        return $this->db->affected_rows();
-    }
-    
     public function getOne(ARRAY $params=array()){
         if(empty($params['user_name']) && empty($params['id'])){
             return false;
@@ -87,6 +70,11 @@ class RoleModel extends MY_Model {
             //unset($params['page']);
         }else{
             $this->db->limit($params['page']['limit']);
+        }
+        if(!isset($params['is_del'])){
+            $this->db->where('is_del',0);
+        }else{
+            $this->db->where('is_del',(int)$params['is_del']);
         }
         #列表
         $query['rows'] = $this->db->order_by('order_by','DESC')->get(self::TABLE_NAME)->result_array();

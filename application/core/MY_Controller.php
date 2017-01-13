@@ -71,6 +71,7 @@ class MY_Controller extends CI_Controller {
         $menuArr = array();
         foreach ($menuSecond as $k4 => $v4) {
             $menuSecondArr = array();#二级菜单 临时数组格式
+            $flag = false;
             foreach ($v4 as $k5 => $v5) {
                 $subMenuArr = array();#三级菜单 临时数组格式
                 foreach ($menu as $k6 => $v6) {
@@ -87,13 +88,14 @@ class MY_Controller extends CI_Controller {
                         unset($menu[$k6]);
                     }
                 }
-                $menuSecondArr[] = array('text'=>$v5['name'],'items'=>$subMenuArr);
+                $menuSecondArr[] = array('text'=>$v5['name'],'collapsed'=>$flag,'items'=>$subMenuArr);
+                $flag = true;
             }
             
             #菜单数组
             $menuArr[] = array(
-                'id'    => $k4,             #一级菜单的id 页面的唯一标识
-                'menu'  => $menuSecondArr   #一级菜单下的菜单数组
+                'id'        => $k4,             #一级菜单的id 页面的唯一标识
+                'menu'      => $menuSecondArr   #一级菜单下的菜单数组
             );
         }
         

@@ -57,27 +57,10 @@ class Login extends CI_Controller {
             $userName = $this->input->post('userName');
             $password = $this->input->post('password');
             $captcha = $this->input->post('captcha');
-            $rules = array(
-                array(
-                    'field' => 'userName',
-                    'label' => '用户名',
-                    'rules' => 'trim|required|min_length[5]|max_length[16]'
-                ),
-                array(
-                    'field' => 'password',
-                    'label' => '密码',
-                    'rules' => 'trim|required|min_length[6]'
-                ),
-                array(
-                    'field' => 'captcha',
-                    'label' => '验证码',
-                    'rules' => 'trim|required|exact_length[4]'
-                ),
-            );
-            $this->form_validation->set_rules($rules);
+            
             $this->form_validation->set_error_delimiters('','');
             
-            if($this->form_validation->run() === FALSE){
+            if($this->form_validation->run('login') === FALSE){
                 $error = $this->form_validation->error('userName') AND ajaxJson($error,300);
                 $error = $this->form_validation->error('password') AND ajaxJson($error,300);
                 $error = $this->form_validation->error('captcha') AND ajaxJson($error,300);
@@ -126,6 +109,10 @@ class Login extends CI_Controller {
             $cap = create_captcha($vals);
             if($cap){
                 $this->session->set_userdata(array('captcha'=>$cap['word']));
+            }
+            $m = $this->input->get('m');
+            if(!empty($m)){
+                die($cap['image']);
             }
             return isset($cap['image']) ? $cap['image'] : '';
         }

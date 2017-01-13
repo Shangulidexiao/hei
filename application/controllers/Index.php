@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 /* 
  * 后台首页
  * @date    2016-09-15

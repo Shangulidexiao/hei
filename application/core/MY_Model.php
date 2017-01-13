@@ -8,5 +8,39 @@
  */
 
 class MY_Model extends CI_Model{
-    
+        
+    /**
+     * 删除用户（慎用）
+     * @param array $params
+     * @return boolean
+     */
+    public function delete(ARRAY $params=array()){
+        if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
+            $this->db->or_where_in('id',$params['idArr'])->delete(static::TABLE_NAME);
+            return $this->db->affected_rows();
+        }
+        if(empty($params) || empty($params['id'])){
+            return false;
+        }
+        $this->db->where($params)->delete(static::TABLE_NAME);
+        return $this->db->affected_rows();
+    }
+    /**
+     * 假删除
+     * @param array $params
+     * @return boolean
+     */
+    public function del(ARRAY $params=array()){
+        $delArr['is_del'] = 1;
+        if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
+            $this->db->or_where_in('id',$params['idArr'])->update(static::TABLE_NAME,$delArr);
+            return $this->db->affected_rows();
+        }
+        if(empty($params) || empty($params['id'])){
+            return false;
+        }
+        $this->db->where($params)->update(static::TABLE_NAME,$delArr);
+        echo $this->db->last_query();
+        return $this->db->affected_rows();
+    }
 }

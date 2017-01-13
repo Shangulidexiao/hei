@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  *  CodeIgniter 
  *  组控制器
@@ -21,10 +21,10 @@ class Group extends MY_Controller {
     }
    
     public function listData(){
-        $page['start']          = $this->input->get_post('start');
-        $page['limit']          = $this->input->get_post('limit');
+        $page['start']          = (int)$this->input->get_post('start');
+        $page['limit']          = (int)$this->input->get_post('limit');
         $params['page']         = $page;
-        $params['name']         = $this->input->get_post('name');
+        $params['name']         = $this->input->get_post('name',true);
         $params['parent_id']    = $this->input->get_post('parent_id');
         $params['status']       = $this->input->get_post('status');
         $roleList               = $this->group->getList($params);
@@ -32,10 +32,10 @@ class Group extends MY_Controller {
     }
 
     public function update(){
-        $update['id']         = $this->input->post('id');
-        $update['order_by']   = $this->input->post('order_by');
-        $update['name']       = $this->input->post('name');
-        $update['status']     = $this->input->post('status');
+        $update['id']         = (int)$this->input->post('id');
+        $update['order_by']   = (int)$this->input->post('order_by');
+        $update['name']       = $this->input->post('name',true);
+        $update['status']     = (int)$this->input->post('status');
         $row                  = $this->group->update($update);
         if($row){
             ajaxJson('更新成功！');
@@ -45,10 +45,10 @@ class Group extends MY_Controller {
     }
 
     public function add(){
-        $add['parent_id']     = $this->input->post('parent_id');
-        $add['order_by']      = $this->input->post('order_by');
-        $add['name']          = $this->input->post('name');
-        $add['status']        = $this->input->post('status');
+        $add['parent_id']     = (int)$this->input->post('parent_id');
+        $add['order_by']      = (int)$this->input->post('order_by');
+        $add['name']          = $this->input->post('name',true);
+        $add['status']        = (int)$this->input->post('status');
         $newId                = $this->group->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
@@ -62,7 +62,7 @@ class Group extends MY_Controller {
         $idArr      = explode(',', $ids);
         $delRows    = $this->group->del(array('idArr'=>$idArr));
         if($delRows){
-            ajaxJson('删除成功！最新id为'.$newId);
+            ajaxJson('删除成功！');
         }else{
             ajaxJson('删除失败',300);
         }

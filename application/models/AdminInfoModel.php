@@ -70,18 +70,14 @@ class AdminInfoModel extends MY_Model {
         #总行数
         $query['results'] = $this->getListNum($params);
         
-        if(!empty($params['name'])){
-            $this->db->like('name',$params['name']);
-        }
-        if($params['mobile'] !== ''){
-            $this->db->where('mobile',(int)$params['mobile']);
+        if(!empty($params['user_name'])){
+            $this->db->like('user_name',$params['user_name']);
         }
         if($params['status'] !== ''){
-            $this->db->where('status',(int)$params['status']);
+            $this->db->where('hei_admin.status',(int)$params['status']);
         }
         if(isset($params['page']['start']) && $params['page']['start'] > 0 ){
             $this->db->limit($params['page']['limit'],$params['page']['start']);
-            
             //unset($params['page']);
         }else{
             $this->db->limit($params['page']['limit']);
@@ -101,11 +97,8 @@ class AdminInfoModel extends MY_Model {
      * 计算列表总数
      */
     public function getListNum(ARRAY $params=array()){
-        if(!empty($params['name'])){
-            $this->db->like('name',$params['name']);
-        }
-        if($params['mobile'] !== ''){
-            $this->db->where('mobile',$params['mobile']);
+        if(!empty($params['user_name'])){
+            $this->db->like('user_name',$params['user_name']);
         }
         if($params['status'] !== ''){
             $this->db->where('status',(int)$params['status']);

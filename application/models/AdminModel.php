@@ -41,18 +41,6 @@ class AdminModel extends MY_Model {
         return $this->db->affected_rows();
     }
     
-    /**
-     * 删除用户（慎用）
-     * @param array $params
-     * @return boolean
-     */
-    public function del(ARRAY $params=array()){
-        if(empty($params) || empty($params['id'])){
-            return false;
-        }
-        return $this->db->where($params)->delete(self::TABLE_NAME);
-    }
-    
     public function getOne(ARRAY $params=array()){
         if(empty($params['user_name']) && empty($params['id'])){
             return false;
@@ -62,9 +50,10 @@ class AdminModel extends MY_Model {
     }
     
     public function getList(ARRAY $params=array()){
-
         if(!isset($params['is_del'])){
-            $params['is_del'] = 0;
+            $this->db->where('is_del',0);
+        }else{
+            $this->db->where('is_del',(int)$params['is_del']);
         }
         $query = $this->db->where($params)->select('id,user_name')->get(self::TABLE_NAME);
         return $query->result_array();

@@ -268,7 +268,7 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <div class="controls">
+                        <div class="controls change-image">
                             <label for="captcha" class="control-label glyphicon glyphicon-check"></label>
                             <input type="text" name="captcha" id="captcha" placeholder="验证码" tabindex="3" autocomplete="off"
                                    class="form-control-input  input-captcha"/>
@@ -400,6 +400,13 @@
                     }
                 });
                 return false;
+            });
+        });
+        $('.change-image').on('click','img',function(){
+            var $_this = $('.change-image>img');
+            console.log($_this);
+            $.get('/Login/captcha/?m='+Math.random(),{},function(image){
+                $_this.replaceWith(image);
             });
         });
     });

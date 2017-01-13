@@ -5,7 +5,6 @@
  * @date 2016-11-6 16:43:16 
  */
 
-BUI.use('common/page'); //页面链接跳转
 BUI.use(['bui/grid','bui/data'],function (Grid,Data) {
 var Store = Data.Store,
     statusObj = {"0" : "已启用","1" : "已禁用"},
@@ -90,7 +89,7 @@ var Store = Data.Store,
   grid.render();
 
   function addFunction(){
-    var newData = {url :'请输入菜单地址',name:'请输入菜单名称'};
+    var newData = {name:'请输入组名称'};
     editing.add(newData); //添加记录后，直接编辑
   }
   function delFunction(){
@@ -98,8 +97,11 @@ var Store = Data.Store,
     ids = BUI.Array.map(selections,function (item) {
               return item.id;
     });
-    store.remove(selections);
-    store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+    BUI.Message.Confirm('你确定要删除选中的吗？',function(){
+        store.remove(selections);
+        store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+     },'error');
+
   }
   function addSubFunction(){
     var selections = grid.getSelection();

@@ -125,8 +125,10 @@ var Store = Data.Store,
     ids = BUI.Array.map(selections,function (item) {
               return item.id;
     });
-    store.remove(selections);
-    store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+     BUI.Message.Confirm('你确定要删除选中的吗？',function(){
+        store.remove(selections);
+        store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+     },'error');
   }
 
     //创建表单，表单中的日历，不需要单独初始化

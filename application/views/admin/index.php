@@ -21,12 +21,6 @@
                       </div>
                     </div>
                     <div class="control-group span7">
-                      <label class="control-label">手机号：</label>
-                      <div class="controls">
-                        <input type="text" name="mobile" class="control-text">
-                      </div>
-                    </div>
-                    <div class="control-group span7">
                       <label class="control-label">状态：</label>
                       <div class="controls">
                           <select name="status">

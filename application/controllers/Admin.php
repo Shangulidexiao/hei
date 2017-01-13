@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  *  CodeIgniter 
  *  后台用户
@@ -11,7 +13,8 @@ class Admin extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('AdminInfoModel','adminInfo');
-        $this->load->helpers('json');
+        $this->load->library('form_validation');
+        $this->load->helper(array('json','site'));
     }
     
     public function index(){
@@ -19,21 +22,30 @@ class Admin extends MY_Controller {
     }
    
     public function listData(){
-        $page['start']      = $this->input->get_post('start');
-        $page['limit']      = $this->input->get_post('limit');
+        if($this->form_validation->run('adminList') === FALSE){
+            $error = $this->form_validation->error('start') AND ajaxJson($error,300);
+            $error = $this->form_validation->error('limit') AND ajaxJson($error,300);
+        }
+        $page['start']      = (int)$this->input->post('start');
+        $page['limit']      = (int)$this->input->post('limit');
         $params['page']     = $page;
-        $params['name']     = $this->input->get_post('name');
-        $params['mobile']   = $this->input->get_post('mobile');
-        $params['status']   = $this->input->get_post('status');
+        $params['user_name']= trim($this->input->post('name',true));
+        $params['status']   = $this->input->post('status');
         $authList           = $this->adminInfo->getList($params);
         die(json_encode($authList));
     }
 
-    public function update(){
-        $adminInfo['admin_id']          = $this->input->post('id');
-        $adminInfo['true_name']         = $this->input->post('true_name');
-        $adminInfo['mobile']            = $this->input->post('mobile');
-        $adminInfo['email']             = $this->input->post('email');
+    public function update(){        
+        if($this->form_validation->run('adminUpdate') === FALSE){
+            $error = $this->form_validation->error('id') AND ajaxJson($error,300);
+            $error = $this->form_validation->error('true_name') AND ajaxJson($error,300);
+            $error = $this->form_validation->error('mobile') AND ajaxJson($error,300);
+           // $error = $this->form_validation->error('email') AND ajaxJson($error,300);
+        }
+        $adminInfo['admin_id']          = (int)$this->input->post('id');
+        $adminInfo['true_name']         = $this->input->post('true_name',true);
+        $adminInfo['mobile']            = $this->input->post('mobile',true);
+        $adminInfo['email']             = $this->input->post('email',true);
         $row = $this->adminInfo->update($adminInfo);
         $adminRow = $this->adminUpdate();
         if($row || $adminRow){
@@ -44,10 +56,10 @@ class Admin extends MY_Controller {
     }
     
     public function adminUpdate(){
-        $adminInfo['id']                = $this->input->post('id');
-        $adminInfo['user_name']         = $this->input->post('user_name');
-        $adminInfo['password']          = $this->input->post('password');
-        $rePassword                     = $this->input->post('repassword');
+        $adminInfo['id']                = (int)$this->input->post('id');
+        $adminInfo['user_name']         = $this->input->post('user_name',true);
+        $adminInfo['password']          = $this->input->post('password',true);
+        $rePassword                     = $this->input->post('repassword',true);
         
         #密码为空不更新密码
         if(empty($adminInfo['password']) && ($adminInfo['password'] !== $rePassword)){
@@ -65,11 +77,15 @@ class Admin extends MY_Controller {
     }
 
     public function add(){
+        if($this->form_validation->run('adminUpdate') === FALSE){
+            $error = $this->form_validation->error('order_by') AND ajaxJson($error,300);
+            $error = $this->form_validation->error('status') AND ajaxJson($error,300);
+        }
         $adminInfo['admin_id']              = $this->adminAdd();
         if($adminInfo['admin_id']){
-            $adminInfo['true_name']         = $this->input->post('true_name');
-            $adminInfo['mobile']            = $this->input->post('mobile');
-            $adminInfo['email']             = $this->input->post('email');
+            $adminInfo['true_name']         = $this->input->post('true_name',true);
+            $adminInfo['mobile']            = $this->input->post('mobile',true);
+            $adminInfo['email']             = $this->input->post('email',true);
             $newId = $this->adminInfo->add($adminInfo);
             if($newId){
                 ajaxJson('添加成功！最新id为'.$newId);
@@ -84,17 +100,17 @@ class Admin extends MY_Controller {
         $this->load->library('encryption');
         $this->load->model('AdminModel','admin');
         $this->load->helper('site');
-        $userName       = $this->input->post('user_name');
-        $password       = $this->input->post('password');
-        $rePassword     = $this->input->post('repassword');
+        $userName       = $this->input->post('user_name',true);
+        $password       = $this->input->post('password',true);
+        $rePassword     = $this->input->post('repassword',true);
         if($rePassword !== $password){
             return false;
         }
         $admin['user_name']     = $userName;
         $admin['password']      = password($password);
         $admin['last_ip']       = $this->input->ip_address();
-        $admin['order_by']      = $this->input->post('order_by');
-        $admin['status']        = $this->input->post('status');
+        $admin['order_by']      = (int)$this->input->post('order_by');
+        $admin['status']        = (int)$this->input->post('status');
         $insertId = $this->admin->add($admin);
         return $insertId;
     }

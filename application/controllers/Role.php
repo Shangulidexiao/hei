@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 /* 
  * 角色控制器
  * @date    2016-11-6
@@ -24,13 +24,13 @@ class Role extends MY_Controller {
      * 角色列表的数据
      */
     public function listData(){
-        $page['start']              = $this->input->get_post('start');
-        $page['limit']              = $this->input->get_post('limit');
-        $params['page']          = $page;
-        $params['name']         = $this->input->get_post('name');
-        $params['id']              = $this->input->get_post('id');
-        $params['status']         = $this->input->get_post('status');
-        $roleList                    = $this->role->getList($params);
+        $page['start']              = (int)$this->input->get_post('start');
+        $page['limit']              = (int)$this->input->get_post('limit');
+        $params['page']             = $page;
+        $params['name']             = $this->input->get_post('name',true);
+        $params['id']               = $this->input->get_post('id');
+        $params['status']           = $this->input->get_post('status');
+        $roleList                   = $this->role->getList($params);
         die(json_encode($roleList));
     }
 
@@ -38,11 +38,11 @@ class Role extends MY_Controller {
      * 更新角色
      */
     public function update(){
-        $update['id']               = $this->input->post('id');
-        $update['order_by']     = $this->input->post('order_by');
-        $update['name']          = $this->input->post('name');
-        $update['status']          = $this->input->post('status');
-        $row                          = $this->role->update($update);
+        $update['id']               = (int)$this->input->post('id');
+        $update['order_by']         = (int)$this->input->post('order_by');
+        $update['name']             = $this->input->post('name',true);
+        $update['status']           = (int)$this->input->post('status');
+        $row                        = $this->role->update($update);
         if($row){
             ajaxJson('更新成功！');
         }else{
@@ -54,10 +54,10 @@ class Role extends MY_Controller {
      * 添加角色
      */
     public function add(){
-        $add['order_by']      = $this->input->post('order_by');
-        $add['name']           = $this->input->post('name');
-        $add['status']          = $this->input->post('status');
-        $newId                   = $this->role->add($add);
+        $add['order_by']        = (int)$this->input->post('order_by');
+        $add['name']            = $this->input->post('name',true);
+        $add['status']          = (int)$this->input->post('status');
+        $newId                  = $this->role->add($add);
         if($newId){
             ajaxJson('添加成功！最新id为'.$newId);
         }else{
@@ -84,10 +84,10 @@ class Role extends MY_Controller {
      */
     public function adminList(){
         $this->load->model('RoleAdminModel','roleAdmin');
-        $roleParams['role_id']          = $this->input->get('roleId');#角色id
-        $roleAdmin['admins']           = $this->admin->getList();#所有管理员的列表
-        $roleAdmin['roleAdmins']     = array();
-        $roleAdmins                       = $this->roleAdmin->getList($roleParams);#此角色下的管理员
+        $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
+        $roleAdmin['admins']            = $this->admin->getList();#所有管理员的列表
+        $roleAdmin['roleAdmins']        = array();
+        $roleAdmins                     = $this->roleAdmin->getList($roleParams);#此角色下的管理员
         foreach ($roleAdmins as $adminOne) {
             $roleAdmin['roleAdmins'][] = $adminOne['admin_id'];
         }
@@ -102,7 +102,7 @@ class Role extends MY_Controller {
     public function addAdmin(){
         $this->load->model('RoleAdminModel','roleAdmin');
         $adminList  = $this->input->post('admin');
-        $roleId     = $this->input->post('roleId');
+        $roleId     = (int)$this->input->post('roleId');
         if(empty($adminList)){
             $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
             ajaxJson('已删除该角色的所有人员',300);
@@ -110,12 +110,12 @@ class Role extends MY_Controller {
         $this->roleAdmin->delAdmin(array('role_id'=>$roleId));#先删除这个角色下的所有用户
         $adminArr = array();
         foreach ($adminList as $adminKey => $admin){
-            $adminArr[$adminKey]['role_id']             = $roleId;
-            $adminArr[$adminKey]['admin_id']          = $admin;
+            $adminArr[$adminKey]['role_id']          = $roleId;
+            $adminArr[$adminKey]['admin_id']         = $admin;
             $adminArr[$adminKey]['create_time']      = time();
             $adminArr[$adminKey]['update_time']      = time();
-            $adminArr[$adminKey]['create_id']      = $this->userInfo['id'];
-            $adminArr[$adminKey]['update_id']      = $this->userInfo['id'];
+            $adminArr[$adminKey]['create_id']        = $this->userInfo['id'];
+            $adminArr[$adminKey]['update_id']        = $this->userInfo['id'];
         }
         $success = $this->roleAdmin->addAdminList($adminArr);
         if($success > 0){
@@ -132,10 +132,10 @@ class Role extends MY_Controller {
         $this->load->model('AuthModel','auth');
         $this->load->model('RoleAuthModel','roleAuth');
         $this->load->helpers('bui');
-        $roleParams['role_id']      = $this->input->get('roleId');#角色id
-        $selectAuth                    = $this->roleAuth->getAllByRoleId($roleParams);
-        $authAll                         = $this->auth->getAll();
-        $tree                             = createBUITree($authAll,$selectAuth);
+        $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
+        $selectAuth                     = $this->roleAuth->getAllByRoleId($roleParams);
+        $authAll                        = $this->auth->getAll();
+        $tree                           = createBUITree($authAll,$selectAuth);
         $this->load->view('role/authTree');
     }
     /**
@@ -145,10 +145,10 @@ class Role extends MY_Controller {
         $this->load->model('AuthModel','auth');
         $this->load->model('RoleAuthModel','roleAuth');
         $this->load->helpers('bui');
-        $roleParams['role_id']      = $this->input->get('roleId');#角色id
-        $selectAuth                    = $this->roleAuth->getAllByRoleId($roleParams);
-        $authAll                         = $this->auth->getAll();
-        $tree                             = createBUITree($authAll,$selectAuth);
+        $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
+        $selectAuth                     = $this->roleAuth->getAllByRoleId($roleParams);
+        $authAll                        = $this->auth->getAll();
+        $tree                           = createBUITree($authAll,$selectAuth);
         die(json_encode($tree));
     }
     
@@ -156,8 +156,8 @@ class Role extends MY_Controller {
      *  为角色添加权限
      */
     public function addAuth(){
-        $authList = $this->input->post('auths');
-        $roleId     = $this->input->post('roleId');
+        $authList       = $this->input->post('auths');
+        $roleId         = (int)$this->input->post('roleId');
         
         $this->load->model('RoleAuthModel','roleAuth');
          if(empty($authList)){
@@ -167,12 +167,12 @@ class Role extends MY_Controller {
         $this->roleAuth->delAuth(array('role_id'=>$roleId));#先删除这个角色下的所有用户
         $adminArr = array();
         foreach ($authList as $authKey => $auth){
-            $adminArr[$authKey]['role_id']             = $roleId;
-            $adminArr[$authKey]['auth_id']            = $auth;
-            $adminArr[$authKey]['create_time']      = time();
-            $adminArr[$authKey]['update_time']      = time();
-            $adminArr[$authKey]['create_id']        = $this->userInfo['id'];
-            $adminArr[$authKey]['update_id']      = $this->userInfo['id'];
+            $adminArr[$authKey]['role_id']              = $roleId;
+            $adminArr[$authKey]['auth_id']              = (int)$auth;
+            $adminArr[$authKey]['create_time']          = time();
+            $adminArr[$authKey]['update_time']          = time();
+            $adminArr[$authKey]['create_id']            = $this->userInfo['id'];
+            $adminArr[$authKey]['update_id']            = $this->userInfo['id'];
         }
         $success = $this->roleAuth->addAuthList($adminArr);
         if($success > 0){
