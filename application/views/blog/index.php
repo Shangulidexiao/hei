@@ -89,6 +89,5 @@
   <!-- 如果不使用页面内部跳转，则下面 script 标签不需要,同时不需要引入 common/page -->
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/config.js"></script>
   <script type="text/javascript" src="<?php echo SITE_PUBLIC;?>/js/hei/blog.js"></script>
-    
-<body>
+</body>
 </html> 

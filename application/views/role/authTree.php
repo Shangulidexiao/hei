@@ -1,17 +1,16 @@
 <form id="J_Form_Tree" action="" class="form-horizontal">
     <div class="control-group">
-    <label class="control-label"><s>*</s>权限列表：</label>
-    <br>
+        <label class="control-label"><s>*</s>权限列表：</label>
+        <br>
         <div class="row">
             <div id="authTree">
-                 
+
             </div>
         </div>
-    <hr>
+        <hr>
     </div>      
 </form>
 <script>
-    
  BUI.use(['bui/tree','bui/data'],function(Tree,Data){
          /*权限树生成*/
         var treeStore = new Data.TreeStore({
