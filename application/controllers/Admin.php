@@ -138,7 +138,6 @@ class Admin extends MY_Controller {
      */
     public function treeData(){
         $this->load->model('AuthModel','auth');
-        $this->load->model('AdminAuthModel','adminAuth');
         $this->load->helpers('bui');
         $roleParams['admin_id']      = $this->input->get('adminId');#用户id
         $selectAuth                    = $this->adminAuth->getAllByAdminId($roleParams);
@@ -153,8 +152,6 @@ class Admin extends MY_Controller {
     public function addAuth(){
         $authList = $this->input->post('auths');
         $adminId    = $this->input->post('adminId');
-        
-        $this->load->model('AdminAuthModel','adminAuth');
          if(empty($authList)){
             $this->adminAuth->delAuth(array('admin_id'=>$adminId));#删除这个角色下的所有用户
             ajaxJson('已删除该角色的所有人员',300);

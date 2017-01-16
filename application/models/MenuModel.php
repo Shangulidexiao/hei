@@ -13,7 +13,7 @@ class MenuModel extends MY_Model {
         parent::__construct();
     }
     
-    public function getMenuAll(ARRAY $params = array()){
+    public function getMenuByAuth(ARRAY $params = array()){
         if(!isset($params['authIds']) || empty($params['authIds'])){
             return array();
         }
@@ -23,11 +23,11 @@ class MenuModel extends MY_Model {
         }
         return array();
     }
-    public function getMenu(ARRAY $params = array()){
-        if(empty($params)){
-            return false;
+    public function getMenuAll(ARRAY $params = array()){
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
         }
-        $query = $this->db->get(self::TABLE_NAME)->result_array();
+        $query = $this->db->where($params)->get(self::TABLE_NAME)->result_array();
         return $query;
     }
 }

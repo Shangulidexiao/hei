@@ -13,7 +13,6 @@ class Index extends MY_Controller {
     }
     
     public function index(){
-        $this->load->helper('url');
         $data = array('admin'=>$this->userInfo);
         $this->load->view('templates/header',$data);
         $this->load->view('templates/script',$data);
@@ -21,7 +20,6 @@ class Index extends MY_Controller {
     }
     
     public function panel(){
-        $this->load->helper('url');
         $data = array('admin'=>$this->userInfo);
         $this->load->view('index/index',$data);
     }

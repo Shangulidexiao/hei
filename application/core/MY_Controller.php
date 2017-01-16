@@ -8,6 +8,7 @@ class MY_Controller extends CI_Controller {
     
     public $userInfo;
     public $authUrl;
+    public $authIds;
     
     /**
      * 初始化系统信息
@@ -20,7 +21,7 @@ class MY_Controller extends CI_Controller {
         $this->load->model('MenuModel','menu');
         $this->load->model('RoleAdminModel','roleAdmin');
         $this->load->model('RoleAuthModel','roleAuth');
-        
+        $this->load->model('AdminAuthModel','adminAuth');
         #判断登录和初始化用户信息
         $isLogin = $this->isLogin();
         if($isLogin === FALSE){
@@ -28,7 +29,11 @@ class MY_Controller extends CI_Controller {
         }
         $uid = $this->input->cookie('uid');
         $this->userInfo = $this->admin->getOne(array('user_name'=>$uid));
-        
+        #根据角色和人员取出菜单的id
+        $roleIds = $this->roleAdmin->getRoleIds(array('admin_id'=>$this->userInfo['id']));
+        $roleAuthIds = $this->roleAuth->getAuths(array('roleIds'=>$roleIds));
+        $adminAuthIds = $this->adminAuth->getAuths(array('adminId'=>$this->userInfo['id']));
+        $this->authIds = array_values($roleAuthIds+$adminAuthIds);
         #用户菜单和权限
         $this->menu();
         $this->isAuth();
@@ -48,7 +53,7 @@ class MY_Controller extends CI_Controller {
     }
     
     public function menu(){
-        $menu = $menuAll = $this->getAuths();
+        $menu = $menuAll = $this->getMenus();
         $menuFirst = $menuSecond  =  array();
         
         #生成顶级菜单
@@ -76,7 +81,6 @@ class MY_Controller extends CI_Controller {
                 $subMenuArr = array();#三级菜单 临时数组格式
                 foreach ($menu as $k6 => $v6) {
                     if($v6['parent_id'] === $v5['id']){
-                        $this->authUrl[] = $v6['url'];#权限判断的数组
                         if($v6['is_show'] == 1){
                             $subMenuArr[] = array(
                                 'id'    =>  $v6['id'],      #页面唯一标识
@@ -84,7 +88,6 @@ class MY_Controller extends CI_Controller {
                                 'href'  => $v6['url']       #三级菜单链接
                             );
                         }
-                        
                         unset($menu[$k6]);
                     }
                 }
@@ -104,15 +107,55 @@ class MY_Controller extends CI_Controller {
     }
     
     /**
-     *  得到用户的所有权限 （现在只去了角色的权限|还有用户的权限没有取呢）
+     *  得到用户的所有权限|有子权限就一定会有父权限
      * @return array
      */
-    protected function getAuths(){
-        $roleIds = $this->roleAdmin->getRoleIds(array('admin_id'=>$this->userInfo['id']));
-        $authIds = $this->roleAuth->getAuths(array('roleIds'=>$roleIds));
-        return $this->menu->getMenuAll(array('authIds'=>$authIds));
+    protected function getMenus(){
+        #拥有子权限一定拥有父权限
+        $menu = $this->menu->getMenuAll();
+        $menuKv = array();
+        $menuArr = array();
+        foreach ($menu as $k => $v){
+            if(in_array($v['id'], $this->authIds)){
+                $menuArr[$v['id']] = $v;
+            }
+            $menuKv[$v['id']] = $v;
+        }
+        return $this->getPraentAuth($menuArr,$menuKv);
     }
+    
+    private function getPraentAuth($menu,$menuAll){
+        if(empty($menu) || empty($menuAll)){
+            return array();
+        }
+        foreach ($menu as  $v) {
+            #一级父亲
+            $pid1 = $v['parent_id'];
+            if($pid1==0 || in_array($pid1, $menu)){
+                continue;
+            }
+            $menu[$menuAll[$pid1]['id']] = $menuAll[$pid1];
             
+            #二级父亲
+            $pid2 = $menuAll[$pid1]['parent_id'];
+            if ($pid2 == 0 || in_array($pid2, $menu)) {
+                continue;
+            }
+            $menu[$menuAll[$pid2]['id']] = $menuAll[$pid2];
+            
+            #顶级父亲
+            $pid3 = $menuAll[$pid2]['parent_id'];
+            if ($pid3 == 0 || in_array($pid3, $menu)) {
+                continue;
+            }
+            $menu[$menuAll[$pid3]['id']] = $menuAll[$pid3];
+            
+        }
+        
+        return $menu;
+    }
+    
+    
 
     /**
      * 判断是否有权限
@@ -121,9 +164,9 @@ class MY_Controller extends CI_Controller {
         $class      = $this->router->fetch_class();
         $method     = $this->router->fetch_method();
         $auth       = strtolower('/'.$class.'/'.$method);
-        $authArrs = $this->getAuths();
+        $authArrs = $this->menu->getMenuByAuth(array('authIds'=>$this->authIds));
         foreach ($authArrs as $authArr){
-            $this->authUrl[] = strtolower($authArr['url']);
+            $this->authUrl[$authArr['id']] = strtolower($authArr['url']);
         }
         $noAuth = array('/index/logout');#不需要权限认证
         if(is_array($this->authUrl) && !in_array($auth, $this->authUrl)){

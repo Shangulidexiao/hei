@@ -28,6 +28,7 @@ class RoleAuthModel extends MY_Model {
         if(!isset($params['roleIds'])){
             return array();
         }
+        $this->db->where('is_del',0);
         $query = $this->db->where_in('role_id',$params['roleIds'])->select('auth_id')->get(self::TABLE_NAME);
         $result = $query->result_array();
         $return = array();
@@ -51,7 +52,7 @@ class RoleAuthModel extends MY_Model {
             return;
         }
         $this->db->where(array('role_id'=>$params['role_id']))
-                 ->update(self::TABLE_NAME,array('is_del'=>1));
+                 ->delete(self::TABLE_NAME);
         return $this->db->affected_rows();
     }
 }

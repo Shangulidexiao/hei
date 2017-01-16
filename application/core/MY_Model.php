@@ -8,7 +8,27 @@
  */
 
 class MY_Model extends CI_Model{
-        
+     
+    /**
+     *  获取这个表的键值对
+     * @param type $key
+     * @param type $value
+     * @return ARRAY 这个表id和名字的键值对
+     */
+    public function getKv($k = 'id',$v = 'name'){
+        if(!isset($params['is_del'])){
+            $params['is_del'] = 0;
+        }
+        $query = $this->db->where($params)->select($k.','.$v)->get(static::TABLE_NAME);
+        $data = $query->result_array();
+        $kv = array();
+        if(!empty($data)){
+            foreach ($data as $key => $value) {
+                $kv[$value[$k]] = $value[$v];
+           }           
+        }
+        return $kv;
+    }
     /**
      * 删除用户（慎用）
      * @param array $params

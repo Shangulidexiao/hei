@@ -83,7 +83,6 @@ class Role extends MY_Controller {
      * 角色添加人员的列表
      */
     public function adminList(){
-        $this->load->model('RoleAdminModel','roleAdmin');
         $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
         $roleAdmin['admins']            = $this->admin->getList();#所有管理员的列表
         $roleAdmin['roleAdmins']        = array();
@@ -100,7 +99,6 @@ class Role extends MY_Controller {
      * 为角色添加人员
      */
     public function addAdmin(){
-        $this->load->model('RoleAdminModel','roleAdmin');
         $adminList  = $this->input->post('admin');
         $roleId     = (int)$this->input->post('roleId');
         if(empty($adminList)){
@@ -130,7 +128,6 @@ class Role extends MY_Controller {
      */
     public function authTree(){
         $this->load->model('AuthModel','auth');
-        $this->load->model('RoleAuthModel','roleAuth');
         $this->load->helpers('bui');
         $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
         $selectAuth                     = $this->roleAuth->getAllByRoleId($roleParams);
@@ -143,7 +140,6 @@ class Role extends MY_Controller {
      */
     public function treeData(){
         $this->load->model('AuthModel','auth');
-        $this->load->model('RoleAuthModel','roleAuth');
         $this->load->helpers('bui');
         $roleParams['role_id']          = (int)$this->input->get('roleId');#角色id
         $selectAuth                     = $this->roleAuth->getAllByRoleId($roleParams);
@@ -158,13 +154,11 @@ class Role extends MY_Controller {
     public function addAuth(){
         $authList       = $this->input->post('auths');
         $roleId         = (int)$this->input->post('roleId');
-        
-        $this->load->model('RoleAuthModel','roleAuth');
          if(empty($authList)){
-            $this->roleAuth->delAuth(array('role_id'=>$roleId));#删除这个角色下的所有用户
+            $this->roleAuth->delAuth(array('role_id'=>$roleId));#删除这个角色下的所有权限
             ajaxJson('已删除该角色的所有人员',300);
         }
-        $this->roleAuth->delAuth(array('role_id'=>$roleId));#先删除这个角色下的所有用户
+        $this->roleAuth->delAuth(array('role_id'=>$roleId));#删除这个角色下的所有权限
         $adminArr = array();
         foreach ($authList as $authKey => $auth){
             $adminArr[$authKey]['role_id']              = $roleId;

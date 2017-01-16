@@ -25,10 +25,11 @@ class AdminAuthModel extends MY_Model {
     }
     
     public function getAuths(ARRAY $params=array()){
-        if(!isset($params['roleIds'])){
+        if(!isset($params['adminId'])){
             return array();
         }
-        $query = $this->db->where_in('role_id',$params['roleIds'])->select('auth_id')->get(self::TABLE_NAME);
+        $this->db->where('is_del',0);
+        $query = $this->db->where('admin_id',$params['adminId'])->select('auth_id')->get(self::TABLE_NAME);
         $result = $query->result_array();
         $return = array();
         foreach ($result as $key => $value) {

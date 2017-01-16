@@ -8,19 +8,18 @@
 BUI.use('common/page'); //页面链接跳转
 BUI.use(['bui/grid','bui/data','bui/select'],function (Grid,Data,Select) {
 var Store = Data.Store,
-    statusObj = {"0" : "已启用","1" : "已禁用"},
-    isShowObj = {"0" : "不显示","1" : "显示"},
+    statusObj = {"0" : "启用","1" : "审核失败"},
+    categoryObj = Hei.cacategoryJson,
     columns = [
         {title : 'id',dataIndex :'id'},
-        {title : '菜单地址',dataIndex :'url',editor : {xtype : 'text',validator : validFn}},
-        {title : '菜单名称',dataIndex :'name',editor : {xtype : 'text',rules : {required : true}}},
-        {title : '菜单图标',dataIndex :'icon'},
-        {title : '父id',dataIndex :'parent_id'},
-        {title : '排序',dataIndex :'order_by',editor : {xtype:'number'}},
+        {title : '标题',dataIndex :'title',editor : {xtype : 'text',validator : validFn}},
+        {title : '阅读次数',dataIndex :'read_num'},
+        {title : '分类',dataIndex :'category_id',renderer : Grid.Format.enumRenderer(categoryObj)},
+        {title : '排序',dataIndex :'order_by'},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
-        {title : '是否显示',dataIndex :'is_show',renderer : Grid.Format.enumRenderer(isShowObj)},
         {title : '操作',width:200,renderer : function(){
                 return '<span class="grid-command btn-edit">编辑</span>';
+                return '<span class="grid-command btn-del">删除</span>';
         }}
       ],
     //默认的数据
@@ -80,12 +79,6 @@ var Store = Data.Store,
           text : '<i class="icon-remove"></i>删除',
           listeners : {
             'click' : delFunction
-          }
-        },{
-          btnCls : 'button button-small',
-          text : '<i class="icon-plus"></i>添加子菜单',
-          listeners : {
-            'click' : addSubFunction
           }
         }]
       }
