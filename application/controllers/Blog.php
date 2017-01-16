@@ -15,7 +15,8 @@ class Blog extends MY_Controller {
     }
     
     public function index(){
-        $this->load->view('blog/index');
+        $blog['categoryJson'] = json_encode(array('cd'=>'dd'));
+        $this->load->view('blog/index',$blog);
     }
    
     public function listData(){
