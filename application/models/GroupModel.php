@@ -43,14 +43,6 @@ class GroupModel extends MY_Model {
         return $this->db->affected_rows();
     }
     
-    public function getOne(ARRAY $params=array()){
-        if(empty($params['user_name']) && empty($params['id'])){
-            return false;
-        }
-        $query = $this->db->where($params)->get(self::TABLE_NAME,1);
-        return $query->row_array();
-    }
-    
     public function getList($params = array()){
         #总行数
         $query['results'] = $this->getListNum($params);

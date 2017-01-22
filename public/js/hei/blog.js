@@ -12,14 +12,13 @@ var Store = Data.Store,
     categoryObj = Hei.cacategoryJson,
     columns = [
         {title : 'id',dataIndex :'id'},
-        {title : '标题',dataIndex :'title',editor : {xtype : 'text',validator : validFn}},
+        {title : '标题',dataIndex :'title',editor : {xtype : 'text'}},
         {title : '阅读次数',dataIndex :'read_num'},
         {title : '分类',dataIndex :'category_id',renderer : Grid.Format.enumRenderer(categoryObj)},
         {title : '排序',dataIndex :'order_by'},
         {title : '状态',dataIndex :'status',renderer : Grid.Format.enumRenderer(statusObj)},
         {title : '操作',width:200,renderer : function(){
                 return '<span class="grid-command btn-edit">编辑</span>';
-                return '<span class="grid-command btn-del">删除</span>';
         }}
       ],
     //默认的数据
@@ -35,25 +34,19 @@ var Store = Data.Store,
         },
         method : 'POST', //更改为POST
         save : {
-               addUrl : '/auth/add',
-               removeUrl : '/auth/remove',
-               updateUrl : '/auth/update'
+               addUrl : '/blog/add',
+               removeUrl : '/blog/remove',
+               updateUrl : '/blog/update'
               }
       },
         params : {
-          name : '',
-          parent_id : '',
-          status : ''
+          title : '',
+          blog_name : '',
+          user_name : '',
+          cate_id : '',
+          status : '',
+          delete : ''
         }
-    }),
-    editing = new Grid.Plugins.DialogEditing({
-      contentId : 'content',
-      triggerCls : 'btn-edit',
-      editor: {
-        title: '菜单操作'
-      },
-      forceFit: true,	// 列宽按百分比自适应
-      autoSave : true //自动添加和更新
     }),
     grid = new Grid.Grid({
       render : '#grid',
@@ -61,7 +54,7 @@ var Store = Data.Store,
       width : 1000,
       forceFit : true,
       store : store,
-      plugins : [Grid.Plugins.CheckSelection,editing],
+      plugins : [Grid.Plugins.CheckSelection],
       bbar:{
             // pagingBar:表明包含分页栏
             pagingBar:true
@@ -85,63 +78,37 @@ var Store = Data.Store,
 
     });
   grid.render();
-
-  function validFn (value,obj) {
-    var records = store.getResult(),
-      rst = '';
-    BUI.each(records,function (record) {
-      if(record.a == value && obj != record){
-        rst = '菜单地址不能重复';
-        return false;
-      }
-    });
-    return rst;
-  }
-
+    grid.on('cellclick',function  (ev) {
+          var record = ev.record, //点击行的记录
+            field = ev.field, //点击对应列的dataIndex
+            target = $(ev.domTarget),
+            blogId = record.id; //点击的元素
+          if(target.hasClass('btn-edit')){
+             top.topManager.openPage({
+              id : 'editBlog',
+              href : '/blog/showTpl?blogId='+blogId,
+              title : '博客编辑'
+            });
+          }
+ 
+        });
   function addFunction(){
-    var newData = {url :'请输入菜单地址',name:'请输入菜单名称'};
-    editing.add(newData); //添加记录后，直接编辑
-  }
-  function addSubFunction(){
-    var selections = grid.getSelection();
-    if(selections.length === 1){
-      var newData = {"parent_id":selections[0].id,"order_by":0};
-      editing.add(newData); //添加记录后，直接编辑
-    }else{
-        BUI.Message.Alert('请选择一个父元素',function(){
-           return ;
-      },'error');
-    }
+    top.topManager.openPage({
+      id : 'addBlog',
+      href : '/blog/showTpl',
+      title : '博客添加'
+    });
   }
   function delFunction(){
     var selections = grid.getSelection();
     ids = BUI.Array.map(selections,function (item) {
               return item.id;
     });
-    store.remove(selections);
-    store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+    BUI.Message.Confirm('你确定要删除选中的吗？',function(){
+        store.remove(selections);
+        store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
+     },'error');
   }
-
-    //创建表单，表单中的日历，不需要单独初始化
-    var form = new BUI.Form.HForm({
-      srcNode : '#searchForm'
-    }).render();
-
-    form.on('beforesubmit',function(ev) {
-      //序列化成对象
-      var obj = form.serializeToObject();
-      obj.start = 0; //返回第一页
-      store.load(obj);
-      return false;
-    });
-        //搜索选择框
-    var suggest = new Select.Suggest({
-        render:'#s1',
-        name:'suggest',
-        url:'server-data.php'
-      });
-      suggest.render();
-
 });
 
 

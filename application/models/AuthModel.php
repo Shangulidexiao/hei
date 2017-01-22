@@ -39,16 +39,7 @@ class AuthModel extends MY_Model {
         $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
         return $this->db->affected_rows();
     }
-   
-    
-    public function getOne(ARRAY $params=array()){
-        if(empty($params['user_name']) && empty($params['id'])){
-            return false;
-        }
-        $query = $this->db->where($params)->get(self::TABLE_NAME,1);
-        return $query->row_array();
-    }
-    
+
     public function getList($params = array()){
         #总行数
         $query['results'] = $this->getListNum($params);
@@ -95,14 +86,8 @@ class AuthModel extends MY_Model {
         return $this->db->count_all_results(self::TABLE_NAME);
     }
     
-    public function getAll(ARRAY $params=array()){
-        if(!isset($params['is_del'])){
-            $this->db->where('is_del',0);
-        }else{
-            $this->db->where('is_del',(int)$params['is_del']);
-        }
-        $query = $this->db->where($params)->select('id,name,parent_id')->get(self::TABLE_NAME);
-        return $query->result_array();
+    public function getAll(ARRAY $params=array(),$select='id,name,parent_id'){
+        return parent::getAll($params,$select);
     }
 }
 

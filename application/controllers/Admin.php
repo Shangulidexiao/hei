@@ -40,7 +40,7 @@ class Admin extends MY_Controller {
             $error = $this->form_validation->error('id') AND ajaxJson($error,300);
             $error = $this->form_validation->error('true_name') AND ajaxJson($error,300);
             $error = $this->form_validation->error('mobile') AND ajaxJson($error,300);
-           // $error = $this->form_validation->error('email') AND ajaxJson($error,300);
+            $error = $this->form_validation->error('email') AND ajaxJson($error,300);
         }
         $adminInfo['admin_id']          = (int)$this->input->post('id');
         $adminInfo['true_name']         = $this->input->post('true_name',true);

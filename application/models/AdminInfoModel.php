@@ -37,33 +37,6 @@ class AdminInfoModel extends MY_Model {
     }
     
     /**
-     * 删除用户（慎用）
-     * @param array $params
-     * @return boolean
-     */
-    public function del(ARRAY $params=array()){
-        if($params['idArr'] && is_array($params['idArr']) && !empty($params['idArr'])){
-            $this->db->or_where_in('id',$params['idArr'])->delete(self::TABLE_NAME);
-            $this->db->or_where_in('admin_id',$params['idArr'])->delete(self::TABLE_NAME_INFO);
-            return $this->db->affected_rows();
-        }
-        if(empty($params) || empty($params['id'])){
-            return false;
-        }
-        $this->db->where($params)->delete(self::TABLE_NAME);
-        $this->db->where(array('admin_id'=>$params['id']))->delete(self::TABLE_NAME_INFO);
-        return $this->db->affected_rows();
-    }
-    
-    public function getOne(ARRAY $params=array()){
-        if(empty($params['user_name']) && empty($params['id'])){
-            return false;
-        }
-        $query = $this->db->where($params)->get(self::TABLE_NAME,1);
-        return $query->row_array();
-    }
-    
-    /**
      * 列表
      */
     public function getList($params = array()){

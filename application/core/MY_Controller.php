@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /* 
  * 后台自定义控制器基类
  */
@@ -15,13 +17,7 @@ class MY_Controller extends CI_Controller {
      */
     public function __construct() {
         parent::__construct();
-        #初始化操作
-        $this->load->helper('url');
-        $this->load->model('AdminModel','admin');
-        $this->load->model('MenuModel','menu');
-        $this->load->model('RoleAdminModel','roleAdmin');
-        $this->load->model('RoleAuthModel','roleAuth');
-        $this->load->model('AdminAuthModel','adminAuth');
+
         #判断登录和初始化用户信息
         $isLogin = $this->isLogin();
         if($isLogin === FALSE){
@@ -173,7 +169,7 @@ class MY_Controller extends CI_Controller {
             if(in_array($auth, $noAuth)){
                 return;
             }
-            die('没有权限呢');
+            //die('没有权限呢');
         }
     }
 

@@ -30,7 +30,7 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        , serverUrl: URL + "php/controller.php"
+        , serverUrl: "/Ueditor/upload"
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
         , toolbars: [[
@@ -39,7 +39,7 @@
             'redo', //重做
             'bold', //加粗
             'indent', //首行缩进
-            'snapscreen', //截图
+            //'snapscreen', //截图
             'italic', //斜体
             'underline', //下划线
             'strikethrough', //删除线
@@ -78,7 +78,7 @@
             'fontsize', //字号
             'paragraph', //段落格式
             'simpleupload', //单图上传
-            'insertimage', //多图上传
+            //'insertimage', //多图上传
             'edittable', //表格属性
             'edittd', //单元格属性
             'link', //超链接
@@ -86,7 +86,7 @@
             'spechars', //特殊字符
             'searchreplace', //查询替换
             'map', //Baidu地图
-            'gmap', //Google地图
+            //'gmap', //Google地图
             'insertvideo', //视频
             'help', //帮助
             'justifyleft', //居左对齐
@@ -114,12 +114,12 @@
             'edittip ', //编辑提示
             'customstyle', //自定义标题
             'autotypeset', //自动排版
-            'webapp', //百度应用
+            //'webapp', //百度应用
             'touppercase', //字母大写
             'tolowercase', //字母小写
             'background', //背景
             'template', //模板
-            'scrawl', //涂鸦
+            //'scrawl', //涂鸦
             'music', //音乐
             'inserttable', //插入表格
             'drafts', // 从草稿箱加载

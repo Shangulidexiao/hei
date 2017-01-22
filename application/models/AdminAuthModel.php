@@ -16,12 +16,8 @@ class AdminAuthModel extends MY_Model {
     }
     
 
-    public function getAllByAdminId(ARRAY $params=array()){
-        if(!isset($params['is_del'])){
-            $params['is_del'] = 0;
-        }
-        $query = $this->db->where($params)->select('auth_id')->get(self::TABLE_NAME);
-        return $query->result_array();
+    public function getAllByAdminId(ARRAY $params=array(),$select='auth_id'){
+       return parent::getAll($params,$select);
     }
     
     public function getAuths(ARRAY $params=array()){

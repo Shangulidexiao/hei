@@ -15,37 +15,9 @@ class CategoryModel extends MY_Model {
         if(empty($params) || empty($params['name'])){
            return false; 
         }
-        $params['order_by'] = empty($params['order_by']) ? 0 : $params['order_by'];
-        $params['create_time'] = empty($params['create_time']) ? time() : $params['create_time'];
-        $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        $params['status'] = empty($params['status']) ? 0 : $params['status'];
+        $params['add_time'] = empty($params['add_time']) ? time() : $params['add_time'];
         $this->db->insert(self::TABLE_NAME,$params);
         return $this->db->insert_id();
-    }
-    
-    public function update(ARRAY $params=array()){
-        if(empty($params) || empty($params['id'])){
-            return false;
-        }
-        $id = $params['id'];
-        unset($params['id']);
-        if(isset($params['create_id'])){
-            unset($params['create_id']);
-        }
-        if(isset($params['create_time'])){
-            unset($params['create_time']);
-        }
-        $params['update_time'] = empty($params['update_time']) ? time() : $params['update_time'];
-        $this->db->where('id',$id)->update(self::TABLE_NAME,$params);
-        return $this->db->affected_rows();
-    }
-
-    public function getOne(ARRAY $params=array()){
-        if(empty($params['user_name']) && empty($params['id'])){
-            return false;
-        }
-        $query = $this->db->where($params)->get(self::TABLE_NAME,1);
-        return $query->row_array();
     }
     
     public function getList($params = array()){
@@ -84,15 +56,6 @@ class CategoryModel extends MY_Model {
             $this->db->where('status',(int)$params['status']);
         }
         return $this->db->count_all_results(self::TABLE_NAME);
-    }
-    
-
-    public function getAll(ARRAY $params=array(),$kv=false){
-        if(!isset($params['is_del'])){
-            $params['is_del'] = 0;
-        }
-        $query = $this->db->where($params)->select('id,name,parent_id')->get(self::TABLE_NAME);
-        return $query->result_array();
     }
 }
 

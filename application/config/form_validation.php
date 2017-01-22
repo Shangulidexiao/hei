@@ -78,4 +78,37 @@ $config = array(
             'rules' => 'trim|valid_email'
             ),
         ),
+    #文章添加
+    'blog' => array(
+        array(
+            'field' => 'title',
+            'label' => '标题不能为空',
+            'rules' => 'trim|required'
+            ),
+        array(
+            'field' => 'content',
+            'label' => '',
+            'rules' => 'trim|required'
+            ),
+        array(
+            'field' => 'order_by',
+            'label' => '',
+            'rules' => 'trim|integer'
+            ),
+        array(
+            'field' => 'category_id',
+            'label' => '',
+            'rules' => 'trim|integer'
+            ),
+        array(
+            'field' => 'is_comment',
+            'label' => '',
+            'rules' => 'trim|integer'
+            ),
+        array(
+            'field' => 'is_visable',
+            'label' => '',
+            'rules' => 'trim|integer'
+            ),
+        ),
 );

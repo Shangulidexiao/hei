@@ -40,15 +40,7 @@ class AdminModel extends MY_Model {
         
         return $this->db->affected_rows();
     }
-    
-    public function getOne(ARRAY $params=array()){
-        if(empty($params['user_name']) && empty($params['id'])){
-            return false;
-        }
-        $query = $this->db->where($params)->get(self::TABLE_NAME,1);
-        return $query->row_array();
-    }
-    
+   
     public function getList(ARRAY $params=array()){
         if(!isset($params['is_del'])){
             $this->db->where('is_del',0);
