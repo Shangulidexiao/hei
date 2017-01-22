@@ -51,5 +51,15 @@ class AdminModel extends MY_Model {
         return $query->result_array();
     }
     
+    public function getIdByName(ARRAY $params=array()){
+        if(!isset($params['is_del'])){
+            $this->db->where('is_del',0);
+        }else{
+            $this->db->where('is_del',(int)$params['is_del']);
+        }
+        $query = $this->db->where($params)->select('id')->get(self::TABLE_NAME,1);
+        return $query->result_array();
+    }
+    
 }
 

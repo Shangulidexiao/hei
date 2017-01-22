@@ -114,7 +114,7 @@ var Store = Data.Store,
       },'error');
     }
   }
-    //创建表单，表单中的日历，不需要单独初始化
+    //创建表单
     var form = new BUI.Form.HForm({
       srcNode : '#searchForm'
     }).render();

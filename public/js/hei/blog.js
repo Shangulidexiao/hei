@@ -109,6 +109,18 @@ var Store = Data.Store,
         store.save('remove',{ids : ids.join(',')}); //save的第三个参数是回调函数
      },'error');
   }
+    //创建表单
+    var form = new BUI.Form.HForm({
+      srcNode : '#searchForm'
+    }).render();
+    
+    form.on('beforesubmit',function(ev) {
+      //序列化成对象
+      var obj = form.serializeToObject();
+      obj.start = 0; //返回第一页
+      store.load(obj);
+      return false;
+    });
 });
 
 

@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="hei-body">
-            <form id="searchForm"  action="/Blog" class="form-horizontal" method="post" tabindex="0" style="outline: none;">
+            <form id="searchForm"  class="form-horizontal"  tabindex="0" style="outline: none;">
                 <div class="row">
                     <div class="span25">
                         <div class="row">
@@ -50,21 +50,13 @@
                         <div class="control-group span7">
                             <label class="control-label">分类：</label>
                             <div class="controls">
-                                <select name="cate_id">
-                                    <option value="">全部</option>
-                                    <option value="0">已启用</option>
-                                    <option value="1">已禁用</option>
-                                </select>
+                               <?=form_dropdown('cate_id',$categoryKv)?>
                             </div>
                         </div>
                         <div class="control-group span7">
                             <label class="control-label">是否已删：</label>
                             <div class="controls">
-                                <select name="delete">
-                                    <option value="">全部</option>
-                                    <option value="0">已启用</option>
-                                    <option value="1">已禁用</option>
-                                </select>
+                               <?=form_dropdown('delete',$deleteKv)?>
                             </div>
                         </div>
                         <div class="form-actions span2 offset2">

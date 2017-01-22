@@ -16,21 +16,24 @@ class Blog extends MY_Controller {
     
     public function index(){
         #获取分类列表的kv
+        $this->load->helper('form');
         $this->load->model('CategoryModel','category');
-        $blog['categoryJson'] = json_encode($this->category->getkv());
+        $blog['categoryKv'] = $this->category->getkv();
+        $blog['categoryJson'] = json_encode($blog['categoryKv']);
+        $blog['deleteKv'] = $blogArr['statusKv'] = array(0=>'正常',1=>'禁用');
         $this->load->view('blog/index',$blog);
     }
    
     public function listData(){
-        $page['start']          = (int)$this->input->post('start');
-        $page['limit']          = (int)$this->input->post('limit');
+        $page['start']          = (int)$this->input->get_post('start');
+        $page['limit']          = (int)$this->input->get_post('limit');
         $params['page']         = $page;
-        $params['title']        = $this->input->post('title',true);
-        $params['blog_name']    = $this->input->post('blog_name',true);
-        $params['user_name']    = $this->input->post('user_name',true);
-        $params['category_id']      = (int)$this->input->post('cate_id');
-        $params['status']       = $this->input->post('status');
-        $params['delete']       = $this->input->post('delete');
+        $params['title']        = $this->input->get_post('title',true);
+        $params['blog_name']    = $this->input->get_post('blog_name',true);
+        $params['user_name']    = $this->input->get_post('user_name',true);
+        $params['category_id']  = (int)$this->input->get_post('cate_id');
+        $params['status']       = $this->input->get_post('status');
+        $params['delete']       = $this->input->get_post('delete');
         $blogList               = $this->blog->getList($params);
         die(json_encode($blogList));
     }
