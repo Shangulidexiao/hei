@@ -114,7 +114,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = 'admin';
+	$application_folder = 'blog';
 
 /*
  *---------------------------------------------------------------
